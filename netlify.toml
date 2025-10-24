@@ -1,0 +1,16 @@
+[build]
+  # Directory with the build output
+  publish = "dist"
+
+  # Build command
+  command = "npm run build"
+
+[[redirects]]
+  # Redirect all routes to index.html for client-side routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.environment]
+  # Node version
+  NODE_VERSION = "18"
