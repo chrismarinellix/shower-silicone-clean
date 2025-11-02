@@ -1,67 +1,60 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import '../styles/Navigation.css';
+import { Button } from 'antd';
+import { PhoneOutlined } from '@ant-design/icons';
 
 function Navigation() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const closeMenu = () => {
-    setIsMenuOpen(false);
+  const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
-    <nav className="navbar">
-      <div className="nav-container">
-        <Link to="/" className="nav-logo" onClick={closeMenu}>
-          <span className="logo-icon">🛁</span>
-          <span>Kartell Caulking</span>
-        </Link>
-
-        <div className={`nav-menu ${isMenuOpen ? 'active' : ''}`}>
-          <Link to="/" className="nav-link" onClick={closeMenu}>
-            Home
-          </Link>
-          <Link to="/what-we-do" className="nav-link" onClick={closeMenu}>
-            What We Do
-          </Link>
-          <Link to="/why-replace" className="nav-link" onClick={closeMenu}>
-            Why Replace
-          </Link>
-          <Link to="/how-it-works" className="nav-link" onClick={closeMenu}>
-            How It Works
-          </Link>
-          <Link to="/when-to-replace" className="nav-link" onClick={closeMenu}>
-            When to Replace
-          </Link>
-          <Link to="/learning" className="nav-link" onClick={closeMenu}>
-            Learning Center
-          </Link>
-          <Link to="/blog" className="nav-link" onClick={closeMenu}>
-            Blog
-          </Link>
-          <Link to="/careers" className="nav-link" onClick={closeMenu}>
-            Careers
-          </Link>
-          <Link to="/contact" className="nav-link nav-cta" onClick={closeMenu}>
-            Get a Quote
-          </Link>
-        </div>
-
-        <button
-          className={`nav-toggle ${isMenuOpen ? 'active' : ''}`}
-          onClick={toggleMenu}
-          aria-label="Toggle menu"
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
+    <header
+      style={{
+        position: 'fixed',
+        top: 0,
+        zIndex: 1000,
+        width: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        background: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(8px)',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+        padding: '0 20px',
+        height: '70px'
+      }}
+    >
+      {/* Logo */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <span style={{
+          fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+          fontWeight: '900',
+          color: '#1a1a1a',
+          whiteSpace: 'nowrap'
+        }}>
+          Shower - Silicone
+        </span>
       </div>
-    </nav>
+
+      {/* Call Button */}
+      <Button
+        type="primary"
+        icon={<PhoneOutlined />}
+        onClick={scrollToContact}
+        style={{
+          background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+          border: 'none',
+          height: '40px',
+          fontWeight: '700',
+          boxShadow: '0 4px 12px rgba(255, 107, 53, 0.3)',
+          fontSize: 'clamp(14px, 2vw, 16px)'
+        }}
+      >
+        <span style={{ display: window.innerWidth > 480 ? 'inline' : 'none' }}>Call </span>0417 035 368
+      </Button>
+    </header>
   );
 }
 

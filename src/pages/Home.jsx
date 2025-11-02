@@ -1,141 +1,119 @@
-import { Link } from 'react-router-dom';
-import '../styles/Home.css';
+import './Home.css';
 
 function Home() {
   return (
-    <div className="home">
-      <section className="hero">
+    <div className="flyer-container">
+      {/* Hero Section with BLURB */}
+      <div className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">
-            Transform Your Bathroom with Professional Silicone Replacement
-          </h1>
-          <p className="hero-subtitle">
-            Say goodbye to moldy, discolored silicone. Say hello to a fresh, clean shower that sparkles like new.
+          <h1 className="hero-title">SHOWER SILICONE<br/>REPLACEMENT</h1>
+
+          <div className="blurb-box">
+            <p className="blurb-text">
+              Is your shower silicone looking black, moldy, and embarrassing? You've lived with that disgusting, unhealthy bathroom for too long.
+            </p>
+            <div className="price-highlight">
+              For just $500
+            </div>
+            <p className="blurb-text">
+              We completely remove that old, revolting silicone and replace it with fresh, pristine professional-grade sealant that makes your bathroom look absolutely beautiful again. Most jobs are completed in just a few hours.
+            </p>
+            <div className="value-badge">
+              <div className="value-main">That's less than $2 a day over a year</div>
+              <div className="value-sub">A tiny price to stop living with a filthy, mold-infested shower</div>
+            </div>
+          </div>
+
+          <div className="phone-hero">
+            <div className="phone-label">Call Now</div>
+            <a href="tel:0417035368" className="phone-link">
+              <div className="phone-number">0417 035 368</div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Benefits Section */}
+      <div className="content-section">
+        <h2 className="section-title">Why Choose Us?</h2>
+
+        <div className="benefits-grid">
+          <div className="benefit-item">
+            <span className="benefit-icon">💰</span>
+            <div className="benefit-title">Affordable Pricing</div>
+            <div className="benefit-desc">Transform your bathroom for just $500. Transparent pricing, no hidden fees.</div>
+          </div>
+
+          <div className="benefit-item">
+            <span className="benefit-icon">⚡</span>
+            <div className="benefit-title">Quick & Efficient</div>
+            <div className="benefit-desc">Most jobs completed in 2-4 hours. Minimal disruption, maximum impact.</div>
+          </div>
+
+          <div className="benefit-item">
+            <span className="benefit-icon">🛡️</span>
+            <div className="benefit-title">Health & Safety</div>
+            <div className="benefit-desc">Remove harmful mold. Create a healthier bathroom for your family.</div>
+          </div>
+
+          <div className="benefit-item">
+            <span className="benefit-icon">👑</span>
+            <div className="benefit-title">Premium Materials</div>
+            <div className="benefit-desc">Highest quality anti-fungal silicone that resists mold for years.</div>
+          </div>
+
+          <div className="benefit-item">
+            <span className="benefit-icon">✓</span>
+            <div className="benefit-title">Satisfaction Guaranteed</div>
+            <div className="benefit-desc">We stand behind our work with comprehensive warranty.</div>
+          </div>
+
+          <div className="benefit-item">
+            <span className="benefit-icon">🏠</span>
+            <div className="benefit-title">Local Service</div>
+            <div className="benefit-desc">Servicing Sandringham & surrounding Melbourne suburbs.</div>
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div className="about-section">
+          <h2 className="section-title">Hi, I'm Chris</h2>
+          <p className="about-text">
+            I'm a professional silicone specialist with years of experience transforming bathrooms across Sandringham and surrounding suburbs. I take pride in delivering absolutely perfect results every single time.
           </p>
-          <div className="hero-cta">
-            <Link to="/contact" className="btn btn-primary">Get Your Free Quote</Link>
-            <Link to="/how-it-works" className="btn btn-secondary">See How It Works</Link>
-          </div>
+          <p className="about-text">
+            I'll completely remove that old, moldy silicone, thoroughly clean and prepare the surfaces, then apply fresh professional-grade anti-fungal silicone with perfect, smooth lines. Your shower will look brand new - and stay that way for years.
+          </p>
         </div>
-        <div className="hero-image">
-          <div className="hero-visual">
-            <div className="before-after">
-              <div className="before-side">
-                <span className="label">Before</span>
-              </div>
-              <div className="after-side">
-                <span className="label">After</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section className="features">
-        <div className="container">
-          <h2>Why Choose Silicone Refresh?</h2>
-          <div className="features-grid">
-            <div className="feature-card">
-              <div className="feature-icon">✨</div>
-              <h3>Professional Results</h3>
-              <p>Expert technicians with years of experience ensure perfect, long-lasting results every time.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">⚡</div>
-              <h3>Quick & Efficient</h3>
-              <p>Most jobs completed in 2-4 hours. Minimal disruption to your day, maximum impact on your bathroom.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">🛡️</div>
-              <h3>Health & Safety</h3>
-              <p>Remove harmful mold and mildew. Create a healthier, cleaner bathroom environment for your family.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">💎</div>
-              <h3>Premium Materials</h3>
-              <p>We use only the highest quality, anti-fungal silicone that resists mold and lasts for years.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">💰</div>
-              <h3>Affordable Pricing</h3>
-              <p>Transform your bathroom for a fraction of the cost of renovation. Transparent pricing, no hidden fees.</p>
-            </div>
-            <div className="feature-card">
-              <div className="feature-icon">✓</div>
-              <h3>Satisfaction Guaranteed</h3>
-              <p>We stand behind our work with a comprehensive warranty. Your satisfaction is our priority.</p>
-            </div>
+        {/* Service Area */}
+        <div className="service-area">
+          <h2 className="section-title">Service Area</h2>
+          <p className="section-desc">Servicing Sandringham & surrounding Melbourne suburbs (within 15km)</p>
+          <div className="suburbs-grid">
+            <div className="suburb-badge">Sandringham</div>
+            <div className="suburb-badge">Hampton</div>
+            <div className="suburb-badge">Brighton</div>
+            <div className="suburb-badge">Black Rock</div>
+            <div className="suburb-badge">Beaumaris</div>
+            <div className="suburb-badge">Cheltenham</div>
+            <div className="suburb-badge">Mentone</div>
+            <div className="suburb-badge">Moorabbin</div>
+            <div className="suburb-badge">Highett</div>
           </div>
         </div>
-      </section>
 
-      <section className="process-preview">
-        <div className="container">
-          <h2>Simple 3-Step Process</h2>
-          <div className="process-steps">
-            <div className="step">
-              <div className="step-number">1</div>
-              <h3>Book Your Appointment</h3>
-              <p>Get a free quote and schedule a convenient time for your service.</p>
-            </div>
-            <div className="step-arrow">→</div>
-            <div className="step">
-              <div className="step-number">2</div>
-              <h3>We Do the Work</h3>
-              <p>Our experts remove old silicone, clean, and apply fresh professional-grade sealant.</p>
-            </div>
-            <div className="step-arrow">→</div>
-            <div className="step">
-              <div className="step-number">3</div>
-              <h3>Enjoy Your Fresh Bathroom</h3>
-              <p>Admire your like-new bathroom with clean, pristine silicone that lasts.</p>
-            </div>
-          </div>
-          <div className="process-cta">
-            <Link to="/how-it-works" className="btn btn-outline">Learn More About Our Process</Link>
-          </div>
+        {/* CTA Section */}
+        <div className="cta-section">
+          <h3 className="cta-title">Ready to Transform Your Bathroom?</h3>
+          <p className="cta-desc">
+            Get your shower looking brand new. Call now for a free quote.
+          </p>
+          <a href="tel:0417035368" className="cta-button">
+            Call Now: 0417 035 368
+          </a>
         </div>
-      </section>
-
-      <section className="testimonials">
-        <div className="container">
-          <h2>What Our Customers Say</h2>
-          <div className="testimonials-grid">
-            <div className="testimonial-card">
-              <div className="stars">★★★★★</div>
-              <p>"I couldn't believe the difference! My shower looks brand new. The team was professional, quick, and the results are amazing. Highly recommend!"</p>
-              <div className="testimonial-author">
-                <strong>Sarah M.</strong>
-                <span>London</span>
-              </div>
-            </div>
-            <div className="testimonial-card">
-              <div className="stars">★★★★★</div>
-              <p>"After trying to clean the moldy silicone myself for months, I finally called Silicone Refresh. Best decision ever! It looks perfect and I love my bathroom again."</p>
-              <div className="testimonial-author">
-                <strong>Emma T.</strong>
-                <span>Manchester</span>
-              </div>
-            </div>
-            <div className="testimonial-card">
-              <div className="stars">★★★★★</div>
-              <p>"Professional service from start to finish. They were on time, respectful of my home, and the quality of work exceeded my expectations. Worth every penny!"</p>
-              <div className="testimonial-author">
-                <strong>Lisa R.</strong>
-                <span>Birmingham</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="cta-section">
-        <div className="container">
-          <h2>Ready to Transform Your Bathroom?</h2>
-          <p>Get your free quote today and discover how affordable a fresh, clean bathroom can be.</p>
-          <Link to="/contact" className="btn btn-primary btn-large">Get Your Free Quote</Link>
-        </div>
-      </section>
+      </div>
     </div>
   );
 }

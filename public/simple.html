@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shower Silicone Replacement - $500</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1920&q=85') center/cover fixed;
+            line-height: 1.6;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.3),
+                        inset 0 2px 0 rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        /* HERO WITH BLURB */
+        .hero {
+            background: rgba(255, 255, 255, 0.005);
+            backdrop-filter: blur(30px) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) saturate(180%);
+            padding: 100px 50px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 30px 30px 0 0;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            color: #000000;
+            margin-bottom: 50px;
+            line-height: 1;
+            letter-spacing: -2px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        /* THE BLURB BOX */
+        .blurb {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
+            color: #1a1a1a;
+            padding: 60px 50px;
+            border-radius: 30px;
+            margin: 0 auto 50px;
+            max-width: 750px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .blurb p {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 28px;
+            color: #1a1a1a;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+        }
+
+        .blurb p:last-child {
+            margin-bottom: 0;
+        }
+
+        .phone-box {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            border: none;
+            padding: 30px 60px;
+            border-radius: 25px;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4);
+        }
+
+        .phone-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 25px 60px rgba(255, 107, 53, 0.5);
+        }
+
+        .phone-label {
+            font-size: 13px;
+            color: white;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.95;
+        }
+
+        .phone {
+            font-size: 40px;
+            font-weight: 900;
+            color: white;
+            text-decoration: none;
+            letter-spacing: 2px;
+            display: block;
+            transition: transform 0.2s ease;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .phone:hover {
+            transform: scale(1.05);
+        }
+
+        /* CONTENT */
+        .content {
+            padding: 80px 50px;
+        }
+
+        h2 {
+            font-size: 42px;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 60px;
+            color: #1a1a1a;
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            margin: 20px auto 0;
+            border-radius: 3px;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .benefit {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
+            padding: 40px 30px;
+            border-radius: 16px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .benefit:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.15);
+            border-color: #FF6B35;
+        }
+
+        .benefit-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .benefit h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: #1a1a1a;
+            line-height: 1.3;
+        }
+
+        .benefit p {
+            font-size: 15px;
+            color: #6c757d;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .cta {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%);
+            padding: 70px 50px;
+            border-radius: 24px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .cta h3 {
+            font-size: 44px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            color: white;
+            letter-spacing: -1px;
+            position: relative;
+        }
+
+        .cta p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            color: white;
+            padding: 22px 70px;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: 800;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+            position: relative;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+        }
+
+        @media (max-width: 992px) {
+            .benefits {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 60px 30px 50px;
+            }
+            .hero h1 {
+                font-size: 44px;
+            }
+            .blurb {
+                padding: 40px 30px;
+            }
+            .blurb p {
+                font-size: 18px;
+            }
+            .content {
+                padding: 50px 30px;
+            }
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+            h2 {
+                font-size: 32px;
+            }
+            .phone-box {
+                padding: 20px 40px;
+            }
+            .phone {
+                font-size: 32px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- HERO SECTION WITH BLURB -->
+        <div class="hero">
+            <h1>Shower • Silicone</h1>
+
+            <!-- THE BLURB - FRONT AND CENTER -->
+            <div class="blurb">
+                <p>
+                    Is your shower silicone looking black, moldy, and embarrassing? You've lived with that unhealthy bathroom for too long.
+                </p>
+
+                <p>
+                    We completely remove that old, moldy silicone, thoroughly clean and prepare the surfaces, then apply fresh professional-grade anti-fungal silicone with smooth, clean lines.
+                </p>
+
+                <p>
+                    Your shower will look brand new and stay that way for years. Most jobs are completed in just a few hours.
+                </p>
+            </div>
+
+            <div class="phone-box">
+                <div class="phone-label">Call Chris Now</div>
+                <a href="tel:0417035368" class="phone">0417 035 368</a>
+            </div>
+        </div>
+
+        <!-- CONTENT SECTION -->
+        <div class="content">
+            <h2>Why Choose Us?</h2>
+
+            <div class="benefits">
+                <div class="benefit">
+                    <span class="benefit-icon">💰</span>
+                    <h3>Affordable Pricing</h3>
+                    <p>Transform your bathroom for just $500. Transparent pricing, no hidden fees.</p>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">⚡</span>
+                    <h3>Quick & Efficient</h3>
+                    <p>Most jobs completed in 2-4 hours. Minimal disruption, maximum impact.</p>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">🛡️</span>
+                    <h3>Health & Safety</h3>
+                    <p>Remove harmful mold. Create a healthier bathroom for your family.</p>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">👑</span>
+                    <h3>Premium Materials</h3>
+                    <p>Highest quality anti-fungal silicone that resists mold for years.</p>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">✓</span>
+                    <h3>Satisfaction Guaranteed</h3>
+                    <p>We stand behind our work with comprehensive warranty.</p>
+                </div>
+
+                <div class="benefit">
+                    <span class="benefit-icon">🏠</span>
+                    <h3>Local Service</h3>
+                    <p>Servicing Sandringham & surrounding Melbourne suburbs.</p>
+                </div>
+            </div>
+
+
+            <div class="cta">
+                <h3>Ready to Transform Your Bathroom?</h3>
+                <p>Get your shower looking brand new. Call now to book your appointment.</p>
+                <a href="tel:0417035368" class="cta-button">Call Chris Now: 0417 035 368</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -4,19 +4,46 @@ Professional bathroom silicone removal and replacement services website for Kart
 
 ## Features
 
-- **Responsive Design**: Mobile-friendly, works on all devices
+- **Fully Responsive Design**: Mobile-first design with clamp-based typography that scales perfectly on all devices
+- **Modern UI**: Vibrant orange gradient theme with Ant Design components
 - **Informational Pages**: Comprehensive information about silicone services
 - **Learning Center**: Gamified educational modules about bathroom silicone
-- **Blog**: SEO-friendly blog posts with educational content
-- **Contact Form**: Easy quote request system
+- **SEO Optimized Blog**: Educational content with proper metadata
+- **Contact Form**: Professional quote request system with validation
 - **Careers Page**: Job application for casual positions
 
 ## Tech Stack
 
-- **React 18** - UI framework
-- **Vite** - Build tool and dev server
-- **React Router** - Client-side routing
-- **CSS3** - Styling with CSS variables
+- **React 18** - Modern UI framework with hooks
+- **Vite 7** - Lightning-fast build tool and dev server
+- **React Router DOM 6** - Client-side routing
+- **Ant Design 5** - Professional React UI component library
+- **Inter Font** - Clean, modern typography via Google Fonts
+
+## Design System
+
+### Color Palette
+
+```css
+Primary Orange: #FF6B35
+Secondary Orange: #F7931E
+Dark Background: #1a1a1a
+Light Background: #f5f5f5 / #f8f9fa
+Text: #1a1a1a (headings), #2C2C2C (body), #6B6B6B (secondary)
+```
+
+### Responsive Typography
+
+All text uses `clamp()` for fluid scaling:
+- **H1 Hero**: `clamp(2rem, 5vw, 3.5rem)` - scales from 32px to 56px
+- **H2 Sections**: `clamp(1.75rem, 4vw, 2.5rem)` - scales from 28px to 40px
+- **Subtitles**: `clamp(1rem, 2.5vw, 1.4rem)` - scales from 16px to 22.4px
+
+### Spacing
+
+- **Hero Sections**: `padding: 80px 20px 60px`
+- **Content Sections**: `padding: 60px 20px`
+- **Container Max Width**: `1200px`
 
 ## Local Development
 
@@ -40,72 +67,63 @@ npm run build
 npm run preview
 ```
 
-The development server will run at `http://localhost:5173`
+The development server will run at `http://localhost:5173` (or next available port)
 
-## Deployment to Netlify
+## Deployment
 
-### Option 1: Deploy via Netlify CLI
+### Current Deployment
+
+**Live URL**: https://kartell-caulking.netlify.app
+
+### Deploy via Netlify CLI
 
 ```bash
-# Install Netlify CLI globally
-npm install -g netlify-cli
+# Build the project
+npm run build
 
-# Login to Netlify
-netlify login
-
-# Initialize and deploy
-netlify init
-
-# Or deploy directly
-netlify deploy --prod
+# Deploy to production
+netlify deploy --prod --dir=dist
 ```
 
-### Option 2: Deploy via Netlify Web Interface
+### Netlify Configuration
 
-1. Push your code to GitHub/GitLab/Bitbucket
-2. Log in to [Netlify](https://app.netlify.com)
-3. Click "Add new site" > "Import an existing project"
-4. Connect your Git provider and select the repository
-5. Netlify will auto-detect the settings from `netlify.toml`:
-   - Build command: `npm run build`
-   - Publish directory: `dist`
-6. Click "Deploy site"
-
-### Option 3: Drag and Drop
-
-1. Build the project: `npm run build`
-2. Go to [Netlify Drop](https://app.netlify.com/drop)
-3. Drag the `dist` folder onto the page
-4. Your site will be deployed instantly!
+The site uses `netlify.toml` for configuration:
+- Build command: `npm run build`
+- Publish directory: `dist`
+- SPA redirect rule for React Router
 
 ## Project Structure
 
 ```
 silicone-spa/
-├── public/              # Static assets
+├── public/
+│   └── images/              # Image assets
+│       ├── logo.png
+│       ├── bathroom-*.jpg
+│       ├── service-*.jpg
+│       └── blog/*.jpg
 ├── src/
-│   ├── assets/         # Images and media
-│   ├── components/     # Reusable components
-│   │   ├── Navigation.jsx
-│   │   └── Footer.jsx
-│   ├── data/           # Data files
-│   │   └── blogPosts.js
-│   ├── pages/          # Page components
-│   │   ├── Home.jsx
-│   │   ├── WhatWeDo.jsx
-│   │   ├── WhyReplace.jsx
-│   │   ├── HowItWorks.jsx
-│   │   ├── WhenToReplace.jsx
-│   │   ├── Learning.jsx
-│   │   ├── Blog.jsx
-│   │   ├── BlogPost.jsx
-│   │   ├── Contact.jsx
-│   │   └── Careers.jsx
-│   ├── styles/         # CSS files
-│   ├── App.jsx         # Main app component
-│   ├── App.css         # Global styles
-│   └── main.jsx        # Entry point
-├── netlify.toml        # Netlify configuration
+│   ├── components/
+│   │   ├── Navigation.jsx   # Header with responsive menu
+│   │   └── Footer.jsx       # Footer with contact info
+│   ├── data/
+│   │   └── blogPosts.js     # Blog content data
+│   ├── pages/
+│   │   ├── Home.jsx         # Landing page
+│   │   ├── WhatWeDo.jsx     # Services overview
+│   │   ├── WhyReplace.jsx   # Benefits/value prop
+│   │   ├── HowItWorks.jsx   # Process explanation
+│   │   ├── WhenToReplace.jsx # Quiz/assessment
+│   │   ├── Learning.jsx     # Educational modules
+│   │   ├── Blog.jsx         # Blog listing
+│   │   ├── BlogPost.jsx     # Blog article view
+│   │   ├── Contact.jsx      # Quote form
+│   │   └── Careers.jsx      # Job applications
+│   ├── App.jsx              # Main app with routing
+│   ├── App.css              # Global styles
+│   └── main.jsx             # Entry point
+├── index.html               # HTML template
+├── netlify.toml             # Netlify config
 ├── package.json
 ├── vite.config.js
 └── README.md
@@ -115,32 +133,78 @@ silicone-spa/
 
 ### Updating Contact Information
 
-Update contact details in:
-- `src/components/Footer.jsx`
-- `src/pages/Contact.jsx`
+Contact details appear in multiple files:
+- `src/components/Footer.jsx` - Footer contact section
+- `src/pages/Contact.jsx` - Contact page with full details
+- Update phone, email, and address consistently
 
 ### Adding Blog Posts
 
-Add new blog posts to `src/data/blogPosts.js`:
+Add new posts to `src/data/blogPosts.js`:
 
 ```javascript
 {
   id: 4,
   slug: 'your-post-slug',
   title: 'Your Post Title',
-  excerpt: 'Brief description',
+  excerpt: 'Brief description for listing page',
   date: '2024-03-20',
   author: 'Kartell Caulking Team',
-  category: 'Maintenance',
-  content: `Your markdown content here...`
+  category: 'Maintenance', // or 'How-To', 'Tips & Tricks', 'Before & After'
+  image: '/images/blog/your-image.jpg',
+  content: `
+    # Your Markdown Content Here
+
+    Write your blog post content using markdown syntax...
+  `
 }
 ```
 
-### Styling
+### Changing Colors
 
-- Main colors are defined in `src/App.css` using CSS variables
-- Component-specific styles are in `src/styles/`
-- Modify the `:root` variables in `App.css` to change the color scheme
+Update the orange gradient to different colors:
+
+1. **In component files**: Search for `#FF6B35` and `#F7931E` and replace
+2. **In App.css**: Update CSS variables for global changes
+3. **Button shadows**: Update `rgba(255, 107, 53, 0.3)` to match new color
+
+### Adding Images
+
+Place images in `public/images/`:
+- Service images: `public/images/service-*.jpg`
+- Blog images: `public/images/blog/*.jpg`
+- Before/after: `public/images/bathroom-*.jpg`
+
+Reference in code as: `/images/your-image.jpg`
+
+## SEO & Performance
+
+### Best Practices Implemented
+
+- Semantic HTML structure
+- Responsive images
+- Fast page loads with Vite
+- Client-side routing (SPA)
+- Mobile-first responsive design
+
+### Google Search Console
+
+To track Google indexing:
+1. Visit: https://search.google.com/search-console
+2. Add property: `kartell-caulking.netlify.app`
+3. Verify ownership via Netlify
+4. Submit sitemap (if generated)
+5. Check indexing status in "Pages" section
+
+Quick check: `site:kartell-caulking.netlify.app` in Google
+
+## Browser Support
+
+- Chrome (last 2 versions)
+- Firefox (last 2 versions)
+- Safari (last 2 versions)
+- Edge (last 2 versions)
+- Mobile browsers (iOS Safari, Chrome Mobile)
 
 ## Business Information
 
@@ -149,6 +213,8 @@ Add new blog posts to `src/data/blogPosts.js`:
 Sandringham VIC 3191
 Phone: 0417 035 368
 Email: info@kartellcaulking.com.au
+
+**Service Areas**: Sandringham, Hampton, Brighton, Black Rock, Beaumaris, Cheltenham, Mentone, Moorabbin, Highett, and surrounding Melbourne suburbs.
 
 ## License
 
