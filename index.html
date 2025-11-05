@@ -589,6 +589,13 @@
                     <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; text-align: center;">
                         Play The Kartell Anthem
                     </div>
+
+                    <!-- LYRICS DISPLAY -->
+                    <div id="lyricsDisplay" style="margin-top: 30px; max-height: 0; overflow: hidden; transition: max-height 0.5s ease;">
+                        <div style="background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; max-height: 300px; overflow-y: auto; font-size: 15px; line-height: 2; color: #1a1a1a; font-weight: 600;">
+                            <div id="lyricsContainer"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -784,20 +791,59 @@
     <script>
         const audio = document.getElementById('audio');
         const playButton = document.getElementById('playButton');
-        const progress = document.getElementById('progress');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
-        const audioInfo = document.getElementById('audioInfo');
+        const lyricsDisplay = document.getElementById('lyricsDisplay');
+        const lyricsContainer = document.getElementById('lyricsContainer');
+
+        // Lyrics with timing (in seconds)
+        const lyrics = [
+            { time: 0, text: "[Verse 1]", type: "section" },
+            { time: 2, text: "I've seen foundations crumble, watched the water seep on through" },
+            { time: 6, text: "Every crack tells a story of the battles we've been through" },
+            { time: 10, text: "But there's Kartell caulking waiting, stronger than we've ever known" },
+            { time: 14, text: "When everything starts breaking, we're not facing this alone" },
+            { time: 18, text: "" },
+            { time: 19, text: "[Pre-Chorus]", type: "section" },
+            { time: 20, text: "Don't point your finger at me" },
+            { time: 22, text: "There's a better way to be" },
+            { time: 24, text: "Sealed and protected, standing tall" },
+            { time: 27, text: "" },
+            { time: 28, text: "[Chorus]", type: "section" },
+            { time: 29, text: "I'm only human, I make mistakes" },
+            { time: 32, text: "But silicone won't bend or break" },
+            { time: 35, text: "It holds together what falls apart" },
+            { time: 38, text: "Kartell caulking—that's where we start" },
+            { time: 41, text: "I'm only human, it's true" },
+            { time: 44, text: "But silicone will see me through" },
+            { time: 47, text: "Flexible, faithful, made to last" },
+            { time: 50, text: "Kartell caulking—built to outlast" },
+            { time: 54, text: "" },
+            { time: 55, text: "[Verse 2]", type: "section" },
+            { time: 56, text: "From the kitchen to the rooftop, every corner of this place" },
+            { time: 60, text: "When the elements come calling, Kartell stands right there face to face" },
+            { time: 64, text: "Heat and cold won't shake it, water doesn't stand a chance" },
+            { time: 68, text: "This is more than just a product, it's a shield, it's our defense" },
+            { time: 72, text: "" },
+            { time: 73, text: "[Bridge]", type: "section" },
+            { time: 74, text: "We all need something to rely on" },
+            { time: 77, text: "When the world feels like it's gone" },
+            { time: 80, text: "Something steady, something sure" },
+            { time: 83, text: "Kartell's real and will endure" },
+            { time: 87, text: "" },
+            { time: 88, text: "[Outro]", type: "section" },
+            { time: 89, text: "Kartell caulking... built to outlast" },
+            { time: 93, text: "Kartell caulking... built to outlast" }
+        ];
+
+        let currentLyricIndex = 0;
 
         function togglePlay() {
             if (audio.paused) {
                 audio.play();
                 playButton.classList.add('playing');
-                audioInfo.textContent = 'The Kartell Anthem';
+                lyricsDisplay.style.maxHeight = '400px';
             } else {
                 audio.pause();
                 playButton.classList.remove('playing');
-                audioInfo.textContent = 'Paused';
             }
         }
 
@@ -807,30 +853,70 @@
             return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
         }
 
-        audio.addEventListener('loadedmetadata', () => {
-            durationEl.textContent = formatTime(audio.duration);
-        });
+        function updateLyrics() {
+            const currentTime = audio.currentTime;
+
+            // Find current lyric
+            for (let i = 0; i < lyrics.length; i++) {
+                if (currentTime >= lyrics[i].time && (i === lyrics.length - 1 || currentTime < lyrics[i + 1].time)) {
+                    if (currentLyricIndex !== i) {
+                        currentLyricIndex = i;
+                        displayLyrics(i);
+                    }
+                    break;
+                }
+            }
+        }
+
+        function displayLyrics(index) {
+            lyricsContainer.innerHTML = '';
+
+            // Show previous, current, and next few lines
+            const start = Math.max(0, index - 2);
+            const end = Math.min(lyrics.length, index + 5);
+
+            for (let i = start; i < end; i++) {
+                const line = document.createElement('div');
+                line.textContent = lyrics[i].text;
+
+                if (i === index) {
+                    // Current line - highlighted
+                    line.style.cssText = 'color: #FF6B35; font-weight: 800; font-size: 17px; margin: 8px 0; text-align: center; transition: all 0.3s ease;';
+                } else if (lyrics[i].type === 'section') {
+                    // Section headers
+                    line.style.cssText = 'color: #666; font-weight: 700; font-style: italic; margin: 15px 0 5px 0; text-align: center; font-size: 13px;';
+                } else if (lyrics[i].text === '') {
+                    // Empty lines
+                    line.style.cssText = 'height: 10px;';
+                } else {
+                    // Other lines
+                    line.style.cssText = 'color: #555; opacity: 0.7; margin: 5px 0; text-align: center;';
+                }
+
+                lyricsContainer.appendChild(line);
+            }
+
+            // Auto-scroll to keep current lyric in view
+            const currentLine = lyricsContainer.children[index - start];
+            if (currentLine) {
+                currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
 
         audio.addEventListener('timeupdate', () => {
-            const progressPercent = (audio.currentTime / audio.duration) * 100;
-            progress.style.width = progressPercent + '%';
-            currentTimeEl.textContent = formatTime(audio.currentTime);
+            updateLyrics();
         });
 
         audio.addEventListener('ended', () => {
             playButton.classList.remove('playing');
-            audioInfo.textContent = 'Click to replay';
-            progress.style.width = '0%';
-            currentTimeEl.textContent = '0:00';
+            lyricsDisplay.style.maxHeight = '0';
+            currentLyricIndex = 0;
         });
 
-        // Click on waveform to seek
-        document.querySelector('.waveform').addEventListener('click', (e) => {
-            const waveform = e.currentTarget;
-            const clickX = e.offsetX;
-            const width = waveform.offsetWidth;
-            const duration = audio.duration;
-            audio.currentTime = (clickX / width) * duration;
+        audio.addEventListener('pause', () => {
+            if (audio.currentTime === 0) {
+                lyricsDisplay.style.maxHeight = '0';
+            }
         });
     </script>
 </body>
