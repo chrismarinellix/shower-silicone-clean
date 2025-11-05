@@ -450,15 +450,60 @@
         }
 
         .play-button.playing::after {
-            content: '';
-            width: 8px;
-            height: 40px;
-            border-left: 12px solid white;
-            border-right: 12px solid white;
-            border-top: none;
-            border-bottom: none;
-            margin-left: 0;
-            background: transparent;
+            display: none;
+        }
+
+        .audio-bars {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            height: 50px;
+        }
+
+        .play-button.playing .audio-bars {
+            display: flex;
+        }
+
+        .bar {
+            width: 6px;
+            background: white;
+            border-radius: 3px;
+            animation: wave 0.8s ease-in-out infinite;
+        }
+
+        .bar:nth-child(1) {
+            height: 20px;
+            animation-delay: 0s;
+        }
+
+        .bar:nth-child(2) {
+            height: 35px;
+            animation-delay: 0.1s;
+        }
+
+        .bar:nth-child(3) {
+            height: 45px;
+            animation-delay: 0.2s;
+        }
+
+        .bar:nth-child(4) {
+            height: 30px;
+            animation-delay: 0.3s;
+        }
+
+        .bar:nth-child(5) {
+            height: 20px;
+            animation-delay: 0.4s;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: scaleY(1);
+            }
+            50% {
+                transform: scaleY(1.5);
+            }
         }
 
         .audio-info {
@@ -532,7 +577,15 @@
 
                 <!-- MUSIC PLAYER IN BLURB -->
                 <div style="margin-top: 40px; padding-top: 40px; border-top: 2px solid rgba(255, 255, 255, 0.4);">
-                    <button class="play-button" id="playButton" onclick="togglePlay()" style="margin: 0 auto 20px;"></button>
+                    <button class="play-button" id="playButton" onclick="togglePlay()" style="margin: 0 auto 20px;">
+                        <div class="audio-bars">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </button>
                     <div style="font-size: 18px; font-weight: 700; color: #1a1a1a; text-align: center;">
                         Play The Kartell Anthem
                     </div>
