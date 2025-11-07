@@ -890,8 +890,13 @@
         function updateLyrics() {
             const currentTime = audio.currentTime;
 
-            // Find current lyric
+            // Find current lyric - skip section headers
             for (let i = 0; i < lyrics.length; i++) {
+                // Skip section markers when finding active lyric
+                if (lyrics[i].type === 'section' || lyrics[i].text === '') {
+                    continue;
+                }
+
                 if (currentTime >= lyrics[i].time && (i === lyrics.length - 1 || currentTime < lyrics[i + 1].time)) {
                     if (currentLyricIndex !== i) {
                         currentLyricIndex = i;
@@ -903,47 +908,63 @@
         }
 
         function displayLyrics(index) {
+            // Don't rebuild DOM every time - just update styles for smoothness
+            const allChildren = Array.from(lyricsContainer.children);
+
+            // If container is empty or structure changed, rebuild
+            if (allChildren.length === 0) {
+                buildLyricsDOM();
+            }
+
+            // Update styles only
+            allChildren.forEach((line, i) => {
+                const lineIndex = parseInt(line.dataset.index);
+
+                if (lineIndex === index) {
+                    // Current line - highlighted
+                    line.style.color = '#FF6B35';
+                    line.style.fontWeight = '800';
+                    line.style.fontSize = '20px';
+                    line.style.transform = 'scale(1.1)';
+                    line.style.textShadow = '0 3px 15px rgba(255, 107, 53, 0.5)';
+                    line.style.opacity = '1';
+                } else {
+                    // Other lines with smooth fade
+                    const distance = Math.abs(lineIndex - index);
+                    const opacity = Math.max(0.3, 1 - (distance * 0.2));
+                    const scale = Math.max(0.92, 1 - (distance * 0.03));
+
+                    line.style.color = '#555';
+                    line.style.fontWeight = '600';
+                    line.style.fontSize = '16px';
+                    line.style.transform = `scale(${scale})`;
+                    line.style.textShadow = 'none';
+                    line.style.opacity = opacity.toString();
+                }
+            });
+
+            // Smooth scroll to current
+            const currentLine = allChildren.find(line => parseInt(line.dataset.index) === index);
+            if (currentLine) {
+                currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
+        function buildLyricsDOM() {
             lyricsContainer.innerHTML = '';
 
-            // Show previous, current, and next few lines (skip section markers)
-            const start = Math.max(0, index - 3);
-            const end = Math.min(lyrics.length, index + 6);
-
-            let visibleIndex = 0;
-            for (let i = start; i < end; i++) {
-                // Skip section headers - don't display them
-                if (lyrics[i].type === 'section' || lyrics[i].text === '') {
-                    continue;
+            // Build all lyrics once (skip section headers)
+            lyrics.forEach((lyric, index) => {
+                if (lyric.type === 'section' || lyric.text === '') {
+                    return;
                 }
 
                 const line = document.createElement('div');
-                line.textContent = lyrics[i].text;
-
-                if (i === index) {
-                    // Current line - highlighted with smooth animation
-                    line.style.cssText = 'color: #FF6B35; font-weight: 800; font-size: 19px; margin: 12px 0; text-align: center; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); transform: scale(1.08); text-shadow: 0 2px 12px rgba(255, 107, 53, 0.4);';
-                } else {
-                    // Other lines with smooth fade based on distance
-                    const distance = Math.abs(i - index);
-                    const opacity = Math.max(0.35, 1 - (distance * 0.18));
-                    const scale = Math.max(0.95, 1 - (distance * 0.02));
-                    line.style.cssText = `color: #555; opacity: ${opacity}; margin: 6px 0; text-align: center; transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); font-size: 15px; transform: scale(${scale});`;
-                }
-
+                line.textContent = lyric.text;
+                line.dataset.index = index;
+                line.style.cssText = 'margin: 8px 0; text-align: center; transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); color: #555; font-size: 16px; opacity: 0.4;';
                 lyricsContainer.appendChild(line);
-                visibleIndex++;
-            }
-
-            // Auto-scroll to keep current lyric centered
-            setTimeout(() => {
-                const allLines = lyricsContainer.children;
-                for (let i = 0; i < allLines.length; i++) {
-                    if (allLines[i].style.color === 'rgb(255, 107, 53)') {
-                        allLines[i].scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        break;
-                    }
-                }
-            }, 50);
+            });
         }
 
         audio.addEventListener('timeupdate', () => {
