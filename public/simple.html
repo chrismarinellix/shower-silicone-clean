@@ -780,6 +780,11 @@
             pointer-events: none;
         }
 
+        /* QUIZ MOBILE STYLES */
+        #questionnaireGame {
+            padding: 50px 40px !important;
+        }
+
         @media (max-width: 768px) {
             #gameScoreboard {
                 top: 10px;
@@ -795,6 +800,56 @@
             #badgePanel {
                 bottom: 10px;
                 right: 10px;
+            }
+
+            /* Mobile quiz styles */
+            #questionnaireGame {
+                padding: 30px 20px !important;
+                margin-bottom: 50px !important;
+            }
+
+            #questionnaireGame h2 {
+                font-size: 28px !important;
+                margin-bottom: 20px !important;
+            }
+
+            #questionnaireGame p {
+                font-size: 14px !important;
+                margin-bottom: 20px !important;
+            }
+
+            #questionDisplay {
+                padding: 20px !important;
+            }
+
+            #questionText {
+                font-size: 16px !important;
+                margin-bottom: 20px !important;
+                line-height: 1.4 !important;
+            }
+
+            #startQuizBtn {
+                padding: 15px 35px !important;
+                font-size: 16px !important;
+            }
+
+            #quizResults {
+                font-size: 16px !important;
+                line-height: 1.5 !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #questionnaireGame {
+                padding: 25px 15px !important;
+            }
+
+            #questionnaireGame h2 {
+                font-size: 24px !important;
+            }
+
+            #questionText {
+                font-size: 15px !important;
             }
         }
     </style>
