@@ -772,6 +772,11 @@
             100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
         }
 
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
         .confetti {
             position: fixed;
             width: 10px;
@@ -1342,9 +1347,10 @@
                 correct: 2
             },
             {
-                question: "What payment methods are accepted?",
-                answers: ["Cash only", "Credit card only", "Cash, bank transfer, or credit card", "PayPal only"],
-                correct: 2
+                question: "What's Chris's FAVORITE payment method? 💵",
+                answers: ["Cash only 😍", "Bank transfer", "Credit card (2% fee)", "Cryptocurrency"],
+                correct: 0,
+                cashObsessed: true
             }
         ];
 
@@ -1413,6 +1419,37 @@
             const question = quizQuestions[currentQuestionIndex];
             const allButtons = document.getElementById('answersContainer').querySelectorAll('button');
 
+            // CASH OBSESSION EASTER EGG
+            if (question.cashObsessed && selectedIndex !== 0) {
+                // They didn't pick cash! Show funny message
+                const funnyMessages = [
+                    "🤔 Hmm... are you SURE? Cash is pretty great...",
+                    "💸 But Chris LOVES cash! Try again?",
+                    "🧐 Really? Not cash? Think about it...",
+                    "😅 Come on, you know Chris prefers cash!",
+                    "💰 Cash is king! Give it another thought..."
+                ];
+                const randomMsg = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
+
+                // Show message
+                document.getElementById('questionText').innerHTML = `<div style="color: #FF6B35; font-size: 18px; margin-bottom: 20px;">${randomMsg}</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+
+                // Pulse the cash button to hint
+                allButtons[0].style.animation = 'pulse 0.5s ease-in-out 3';
+                allButtons[0].style.background = 'rgba(76, 175, 80, 0.3)';
+                allButtons[0].style.borderColor = '#4CAF50';
+                allButtons[0].style.transform = 'scale(1.1)';
+
+                setTimeout(() => {
+                    allButtons[0].style.animation = '';
+                    allButtons[0].style.background = 'rgba(255, 255, 255, 0.8)';
+                    allButtons[0].style.borderColor = 'rgba(255, 107, 53, 0.3)';
+                    allButtons[0].style.transform = 'scale(1)';
+                }, 1500);
+
+                return; // Don't move forward
+            }
+
             // Disable all buttons
             allButtons.forEach(btn => btn.disabled = true);
 
@@ -1425,8 +1462,14 @@
                 quizScore += 10;
                 gameScore += 10;
 
-                // Show score popup
-                showScorePopup('+10', btnElement);
+                // Extra enthusiastic for cash!
+                if (question.cashObsessed) {
+                    showScorePopup('💵 +10 CASH IS KING!', btnElement);
+                    gameScore += 10; // BONUS POINTS FOR CASH
+                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 20px; font-weight: 900; margin-bottom: 20px;">🎉 YES! Chris LOVES cash! +10 BONUS!</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+                } else {
+                    showScorePopup('+10', btnElement);
+                }
 
                 // Update scoreboard
                 updateScoreboard();
