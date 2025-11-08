@@ -1,6 +1,6 @@
 [build]
   # Directory with the build output
-  publish = "dist"
+  publish = "public"
   # No build command - using pre-built HTML
   command = ""
 
