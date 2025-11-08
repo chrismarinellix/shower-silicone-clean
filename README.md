@@ -5,12 +5,14 @@ Professional bathroom silicone removal and replacement services website for Kart
 ## Features
 
 - **Fully Responsive Design**: Mobile-first design with clamp-based typography that scales perfectly on all devices
-- **Modern UI**: Vibrant orange gradient theme with Ant Design components
+- **Modern UI**: Vibrant orange gradient theme with glassmorphic design elements
+- **Kartell Anthem Music Player**: Interactive audio player with real-time visualizer bars and synchronized scrolling lyrics
 - **Informational Pages**: Comprehensive information about silicone services
 - **Learning Center**: Gamified educational modules about bathroom silicone
 - **SEO Optimized Blog**: Educational content with proper metadata
 - **Contact Form**: Professional quote request system with validation
 - **Careers Page**: Job application for casual positions
+- **Legal Pages**: Comprehensive Terms & Conditions and Payment Terms sections
 
 ## Tech Stack
 
@@ -18,6 +20,8 @@ Professional bathroom silicone removal and replacement services website for Kart
 - **Vite 7** - Lightning-fast build tool and dev server
 - **React Router DOM 6** - Client-side routing
 - **Ant Design 5** - Professional React UI component library
+- **HTML5 Audio API** - Native audio playback with precise time synchronization
+- **Vanilla JavaScript** - Performance-optimized lyrics sync and animation
 - **Inter Font** - Clean, modern typography via Google Fonts
 
 ## Design System
@@ -73,7 +77,8 @@ The development server will run at `http://localhost:5173` (or next available po
 
 ### Current Deployment
 
-**Live URL**: https://kartell-caulking.netlify.app
+**Primary URL**: https://shower-silicone-melbourne.netlify.app
+**Alternative URL**: https://kartell-caulking.netlify.app
 
 ### Deploy via Netlify CLI
 
@@ -97,11 +102,13 @@ The site uses `netlify.toml` for configuration:
 ```
 silicone-spa/
 ├── public/
-│   └── images/              # Image assets
-│       ├── logo.png
-│       ├── bathroom-*.jpg
-│       ├── service-*.jpg
-│       └── blog/*.jpg
+│   ├── images/              # Image assets
+│   │   ├── logo.png
+│   │   ├── bathroom-*.jpg
+│   │   ├── service-*.jpg
+│   │   └── blog/*.jpg
+│   ├── simple.html          # Main landing page with music player
+│   └── kartell-song.mp3     # Kartell Anthem audio file
 ├── src/
 │   ├── components/
 │   │   ├── Navigation.jsx   # Header with responsive menu
@@ -128,6 +135,74 @@ silicone-spa/
 ├── vite.config.js
 └── README.md
 ```
+
+## Kartell Anthem Music Player
+
+The landing page features an interactive music player with the Kartell Anthem - a custom-written song that serves as the company jingle.
+
+### Features
+
+- **Animated Visualizer**: 5 vertical bars that pulse and animate in sync with the audio
+- **Synchronized Lyrics**: Lyrics scroll and highlight in real-time as the song plays
+- **Smooth Transitions**: CSS cubic-bezier easing for seamless lyric transitions
+- **Responsive Design**: Optimized for both mobile and desktop devices
+- **Performance Optimized**: DOM elements built once, only CSS properties updated during playback
+
+### Technical Implementation
+
+The music player is implemented in `public/simple.html` using:
+
+1. **HTML5 Audio API**: Provides precise time tracking for lyric synchronization
+2. **timeupdate Event**: Fires continuously during playback to sync lyrics (every ~250ms)
+3. **CSS Animations**: Visualizer bars use staggered animations with different delays
+4. **Lyrics Array**: Timestamps calibrated to match vocal timing across the entire 230-second song
+5. **Build-Once Pattern**: DOM elements created once, then only style properties are updated for smooth 60fps animations
+
+### Lyrics Synchronization
+
+Lyrics are stored as an array of objects with precise timestamps:
+
+```javascript
+const lyrics = [
+  { time: 4.2, text: "I've seen foundations crumble" },
+  { time: 7.2, text: "watched the water seep on through" },
+  // ... 80+ more lines
+];
+```
+
+Timing is shifted 0.8-1 second earlier than vocals to account for visual perception lag, ensuring text appears just before it's sung.
+
+### Audio File
+
+- **Location**: `public/kartell-song.mp3`
+- **Duration**: 230 seconds (3:50)
+- **Format**: MP3
+- **Source**: Custom-written and recorded for Kartell Caulking
+
+## Legal & Terms
+
+The landing page includes comprehensive legal sections:
+
+### Terms & Conditions
+
+Located at the bottom of `public/simple.html`, covering:
+- Residential service scope (excludes commercial properties)
+- Service guarantee and workmanship warranty
+- Liability limitations
+- Quote validity and pricing
+- Cancellation and rescheduling policy
+- Site access requirements
+- Customer obligations for preparation
+
+### Payment Terms
+
+Multiple payment options clearly outlined:
+- **Cash**: Accepted on completion
+- **Bank Transfer**: Direct deposit details provided
+- **Credit Card**: Payment processing available
+- **Commercial Exclusion**: Services limited to residential properties only
+
+Payment is due upon completion of work. All prices include GST where applicable.
 
 ## Customization
 

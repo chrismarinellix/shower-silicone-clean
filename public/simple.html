@@ -460,44 +460,46 @@
             justify-content: center;
             margin: 0 auto 30px;
             transition: all 0.3s ease;
-            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4);
+            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.5);
             position: relative;
-            animation: playButtonPulse 2s ease-in-out infinite;
+            animation: playButtonPulse 1.5s ease-in-out infinite;
         }
 
         .play-button::before {
             content: '';
             position: absolute;
-            top: -20px;
-            left: -20px;
-            right: -20px;
-            bottom: -20px;
+            top: -30px;
+            left: -30px;
+            right: -30px;
+            bottom: -30px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 107, 53, 0.4) 0%, transparent 70%);
-            animation: orb 3s ease-in-out infinite;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.6) 0%, transparent 70%);
+            animation: orb 2s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes playButtonPulse {
             0%, 100% {
                 transform: scale(1);
-                box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4);
+                box-shadow: 0 20px 50px rgba(255, 107, 53, 0.5),
+                            0 0 30px rgba(255, 107, 53, 0.3);
             }
             50% {
-                transform: scale(1.05);
-                box-shadow: 0 25px 60px rgba(255, 107, 53, 0.7),
-                            0 0 40px rgba(255, 107, 53, 0.5);
+                transform: scale(1.15);
+                box-shadow: 0 30px 80px rgba(255, 107, 53, 0.9),
+                            0 0 60px rgba(255, 107, 53, 0.7),
+                            0 0 100px rgba(255, 107, 53, 0.4);
             }
         }
 
         @keyframes orb {
             0%, 100% {
                 transform: scale(1);
-                opacity: 0.6;
+                opacity: 0.7;
             }
             50% {
-                transform: scale(1.3);
-                opacity: 0.3;
+                transform: scale(1.5);
+                opacity: 0.2;
             }
         }
 
@@ -898,8 +900,11 @@
     </style>
 </head>
 <body>
-    <!-- Modern Bathroom Background -->
-    <div class="video-background" style="background: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1920&q=85') center/cover fixed;">
+    <!-- Video Background -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="background-video.mp4" type="video/mp4">
+        </video>
     </div>
 
     <!-- GAME SCOREBOARD -->
@@ -912,6 +917,7 @@
     <div class="container">
         <!-- HERO SECTION WITH BLURB -->
         <div class="hero">
+            <div style="font-size: 36px; font-weight: 900; color: #FF6B35; margin-bottom: 20px; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(255, 107, 53, 0.4);">KARTELL CAULKING</div>
             <h1>Shower • Silicone</h1>
 
             <!-- THE BLURB - FRONT AND CENTER -->
@@ -976,7 +982,7 @@
                 <p style="font-size: 16px; color: #666; margin-bottom: 30px; font-weight: 600;">Test your bathroom expertise! Each correct answer = 50 points</p>
 
                 <div id="quizContainer" style="max-width: 600px; margin: 0 auto;">
-                    <div id="questionDisplay" style="background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
+                    <div id="questionDisplay" style="display: none; background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
                         <div id="questionText" style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 25px;"></div>
                         <div id="answersContainer" style="display: flex; flex-direction: column; gap: 12px;"></div>
                     </div>
@@ -1172,15 +1178,22 @@
         const lyricsDisplay = document.getElementById('lyricsDisplay');
         const lyricsContainer = document.getElementById('lyricsContainer');
 
-        // Start background music very softly on page load
-        window.addEventListener('load', () => {
-            backgroundAudio.volume = 0.05; // Very soft (5% volume)
-            backgroundAudio.play().catch(e => {
-                // Auto-play blocked, wait for user interaction
-                document.body.addEventListener('click', () => {
-                    backgroundAudio.play().catch(() => {});
-                }, { once: true });
-            });
+        // Start background music very softly - modern browsers require user interaction
+        let backgroundMusicStarted = false;
+
+        function startBackgroundMusic() {
+            if (!backgroundMusicStarted && audio.paused) {
+                backgroundAudio.volume = 0.02; // Very soft (2% volume)
+                backgroundAudio.play().catch(() => {
+                    // Silently fail if blocked
+                });
+                backgroundMusicStarted = true;
+            }
+        }
+
+        // Try to start on any user interaction
+        ['click', 'touchstart', 'keydown'].forEach(eventType => {
+            document.addEventListener(eventType, startBackgroundMusic, { once: true });
         });
 
         // Lyrics with timing (in seconds) - adjusted to sync precisely with vocal onset
@@ -1274,9 +1287,11 @@
                 audio.pause();
                 playButton.classList.remove('playing');
 
-                // Resume background music softly
-                backgroundAudio.volume = 0.05;
-                backgroundAudio.play().catch(() => {});
+                // Resume background music softly (only if it was started)
+                if (backgroundMusicStarted) {
+                    backgroundAudio.volume = 0.02;
+                    backgroundAudio.play().catch(() => {});
+                }
             }
         }
 
@@ -1375,9 +1390,11 @@
             lyricsDisplay.style.maxHeight = '0';
             currentLyricIndex = 0;
 
-            // Resume background music softly when main audio ends
-            backgroundAudio.volume = 0.05;
-            backgroundAudio.play().catch(() => {});
+            // Resume background music softly when main audio ends (only if it was started)
+            if (backgroundMusicStarted) {
+                backgroundAudio.volume = 0.02;
+                backgroundAudio.play().catch(() => {});
+            }
         });
 
         audio.addEventListener('pause', () => {
@@ -1391,33 +1408,63 @@
             {
                 question: "How long should you wait before using your shower after new silicone is applied?",
                 answers: ["2-4 hours", "12 hours", "24-48 hours", "1 week"],
-                correct: 2
+                correct: 2,
+                reactions: ["💯 You know your silicone!", "🎯 Perfect timing!", "🧠 Smart choice!", "⭐ Silicone expert!"]
             },
             {
                 question: "What's the main benefit of anti-fungal silicone?",
                 answers: ["It's cheaper", "Resists mould growth", "Dries faster", "Easier to remove"],
-                correct: 1
+                correct: 1,
+                reactions: ["🛡️ No more mould!", "✨ You get it!", "🌟 Brilliant!", "💪 Mould-fighting master!"]
+            },
+            {
+                question: "What happens if you don't replace mouldy silicone?",
+                answers: ["Nothing much", "It looks gross forever", "Mould spreads & health risks!", "It magically fixes itself"],
+                correct: 2,
+                reactions: ["🏥 Health is wealth!", "🧼 Cleanliness champion!", "👏 Exactly right!", "🎖️ Bathroom guru!"]
             },
             {
                 question: "What's included in the $500 service?",
                 answers: ["Just new silicone", "Silicone + cleaning", "Remove old + clean + new silicone", "Tile replacement"],
-                correct: 2
+                correct: 2,
+                reactions: ["💎 Full service superstar!", "🔥 You know value!", "🎊 Absolutely correct!", "👑 VIP knowledge!"]
             },
             {
                 question: "When are services available?",
                 answers: ["Weekdays only", "Anytime", "Weekend mornings", "24/7"],
-                correct: 2
+                correct: 2,
+                reactions: ["📅 Weekend warrior!", "⏰ Perfect scheduling!", "🌅 Morning person!", "✅ Spot on!"]
+            },
+            {
+                question: "How often should shower silicone be replaced?",
+                answers: ["Every month", "Every year", "Every 3-5 years", "Never"],
+                correct: 2,
+                reactions: ["📆 Maintenance master!", "🔧 Smart thinking!", "🎯 Bang on!", "💡 Genius!"]
             },
             {
                 question: "What's the warranty period for workmanship?",
                 answers: ["30 days", "6 months", "12 months", "Lifetime"],
-                correct: 2
+                correct: 2,
+                reactions: ["📜 Contract expert!", "🤝 Trust builder!", "💪 Confidence!", "⚡ Nailed it!"]
+            },
+            {
+                question: "What tool does Chris use to remove old silicone?",
+                answers: ["His fingernails 😬", "A butter knife", "Professional silicone removal tools", "Magic"],
+                correct: 2,
+                reactions: ["🔨 Professional grade!", "⚒️ Proper tools!", "🛠️ Craftsman approved!", "🎨 Artist's choice!"]
+            },
+            {
+                question: "Why is professional silicone better than DIY?",
+                answers: ["It's not, DIY is fine", "Lasts longer & looks perfect", "It's more expensive", "Chris needs the work"],
+                correct: 1,
+                reactions: ["👨‍🔧 Pro quality wins!", "🏆 Excellence matters!", "💯 Professional pride!", "✨ Quality over quantity!"]
             },
             {
                 question: "What's Chris's FAVORITE payment method? 💵",
                 answers: ["Cash 😍", "Bank transfer", "Credit card (2% fee)", "Cryptocurrency"],
                 correct: 0,
-                cashObsessed: true
+                cashObsessed: true,
+                reactions: ["💰 CHA-CHING!", "💵 CASH IS KING!", "🤑 YOU'RE THE BEST!", "💸 MONEY MONEY MONEY!"]
             }
         ];
 
@@ -1433,6 +1480,11 @@
         function startQuiz() {
             currentQuestionIndex = 0;
             quizScore = 0;
+
+            // Reset game score when starting fresh quiz
+            gameScore = 0;
+            updateScoreboard();
+
             const startBtn = document.getElementById('startQuizBtn');
             const resultsDiv = document.getElementById('quizResults');
             const displayDiv = document.getElementById('questionDisplay');
@@ -1546,20 +1598,25 @@
                 quizScore += 50;
                 gameScore += 50;
 
+                // Random fun reaction
+                const reaction = question.reactions[Math.floor(Math.random() * question.reactions.length)];
+
                 // Extra enthusiastic for cash!
                 if (question.cashObsessed) {
                     showScorePopup('💵 +50 CASH IS KING!', btnElement);
                     gameScore += 50; // BONUS POINTS FOR CASH
-                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 20px; font-weight: 900; margin-bottom: 20px;">🎉 YES! Chris LOVES cash! +50 BONUS!</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 24px; font-weight: 900; margin-bottom: 20px; animation: pulse 0.5s ease-in-out 2;">🎉 ${reaction} +50 BONUS!</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+                    createMassiveConfetti(); // EXTRA CONFETTI FOR CASH!
                 } else {
-                    showScorePopup('+50', btnElement);
+                    showScorePopup(`${reaction} +50`, btnElement);
+                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 22px; font-weight: 900; margin-bottom: 20px; animation: pulse 0.5s ease-in-out 1;">${reaction}</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+                    // More confetti for correct answers!
+                    createConfetti(btnElement.getBoundingClientRect());
+                    createConfetti(); // Add general confetti too
                 }
 
                 // Update scoreboard
                 updateScoreboard();
-
-                // Confetti for correct answer
-                createConfetti(btnElement.getBoundingClientRect());
             } else {
                 // Wrong answer
                 btnElement.style.background = 'linear-gradient(135deg, #f44336 0%, #da190b 100%)';
