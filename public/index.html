@@ -462,11 +462,49 @@
             transition: all 0.3s ease;
             box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4);
             position: relative;
+            animation: playButtonPulse 2s ease-in-out infinite;
+        }
+
+        .play-button::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 107, 53, 0.4) 0%, transparent 70%);
+            animation: orb 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes playButtonPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 20px 50px rgba(255, 107, 53, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 25px 60px rgba(255, 107, 53, 0.7),
+                            0 0 40px rgba(255, 107, 53, 0.5);
+            }
+        }
+
+        @keyframes orb {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.3;
+            }
         }
 
         .play-button:hover {
             transform: scale(1.1);
             box-shadow: 0 25px 60px rgba(255, 107, 53, 0.6);
+            animation-play-state: paused;
         }
 
         .play-button:active {
@@ -860,11 +898,8 @@
     </style>
 </head>
 <body>
-    <!-- Video Background -->
-    <div class="video-background">
-        <video autoplay muted loop playsinline>
-            <source src="background-video.mp4" type="video/mp4">
-        </video>
+    <!-- Modern Bathroom Background -->
+    <div class="video-background" style="background: url('https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=1920&q=85') center/cover fixed;">
     </div>
 
     <!-- GAME SCOREBOARD -->
@@ -926,6 +961,11 @@
         <audio id="audio" preload="metadata">
             <source src="kartell-song.mp3" type="audio/mpeg">
             Your browser does not support the audio element.
+        </audio>
+
+        <!-- Background Music (very soft, auto-playing) -->
+        <audio id="backgroundAudio" loop preload="auto">
+            <source src="kartell-song.mp3" type="audio/mpeg">
         </audio>
 
         <!-- CONTENT SECTION -->
@@ -1127,9 +1167,21 @@
 
     <script>
         const audio = document.getElementById('audio');
+        const backgroundAudio = document.getElementById('backgroundAudio');
         const playButton = document.getElementById('playButton');
         const lyricsDisplay = document.getElementById('lyricsDisplay');
         const lyricsContainer = document.getElementById('lyricsContainer');
+
+        // Start background music very softly on page load
+        window.addEventListener('load', () => {
+            backgroundAudio.volume = 0.05; // Very soft (5% volume)
+            backgroundAudio.play().catch(e => {
+                // Auto-play blocked, wait for user interaction
+                document.body.addEventListener('click', () => {
+                    backgroundAudio.play().catch(() => {});
+                }, { once: true });
+            });
+        });
 
         // Lyrics with timing (in seconds) - adjusted to sync precisely with vocal onset
         const lyrics = [
@@ -1208,12 +1260,23 @@
 
         function togglePlay() {
             if (audio.paused) {
+                // Stop and fade out background music
+                backgroundAudio.pause();
+                backgroundAudio.currentTime = 0;
+
+                // Start main audio from beginning at normal volume
+                audio.currentTime = 0;
+                audio.volume = 1.0;
                 audio.play();
                 playButton.classList.add('playing');
                 lyricsDisplay.style.maxHeight = '400px';
             } else {
                 audio.pause();
                 playButton.classList.remove('playing');
+
+                // Resume background music softly
+                backgroundAudio.volume = 0.05;
+                backgroundAudio.play().catch(() => {});
             }
         }
 
@@ -1311,6 +1374,10 @@
             playButton.classList.remove('playing');
             lyricsDisplay.style.maxHeight = '0';
             currentLyricIndex = 0;
+
+            // Resume background music softly when main audio ends
+            backgroundAudio.volume = 0.05;
+            backgroundAudio.play().catch(() => {});
         });
 
         audio.addEventListener('pause', () => {
@@ -1348,7 +1415,7 @@
             },
             {
                 question: "What's Chris's FAVORITE payment method? 💵",
-                answers: ["Cash only 😍", "Bank transfer", "Credit card (2% fee)", "Cryptocurrency"],
+                answers: ["Cash 😍", "Bank transfer", "Credit card (2% fee)", "Cryptocurrency"],
                 correct: 0,
                 cashObsessed: true
             }
@@ -1366,8 +1433,14 @@
         function startQuiz() {
             currentQuestionIndex = 0;
             quizScore = 0;
-            document.getElementById('startQuizBtn').style.display = 'none';
-            document.getElementById('quizResults').style.display = 'none';
+            const startBtn = document.getElementById('startQuizBtn');
+            const resultsDiv = document.getElementById('quizResults');
+            const displayDiv = document.getElementById('questionDisplay');
+
+            startBtn.style.display = 'none';
+            resultsDiv.style.display = 'none';
+            displayDiv.style.display = 'block';
+
             showQuestion();
         }
 
@@ -1378,7 +1451,8 @@
             }
 
             const question = quizQuestions[currentQuestionIndex];
-            document.getElementById('questionText').textContent = `Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+            const questionText = document.getElementById('questionText');
+            questionText.textContent = `Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
 
             const answersContainer = document.getElementById('answersContainer');
             answersContainer.innerHTML = '';
@@ -1386,6 +1460,7 @@
             question.answers.forEach((answer, index) => {
                 const btn = document.createElement('button');
                 btn.textContent = answer;
+                btn.disabled = false; // Ensure button is enabled
                 btn.style.cssText = `
                     background: rgba(255, 255, 255, 0.8);
                     border: 2px solid rgba(255, 107, 53, 0.3);
@@ -1398,19 +1473,28 @@
                     color: #1a1a1a;
                 `;
 
-                btn.onmouseover = () => {
-                    btn.style.background = 'rgba(255, 107, 53, 0.2)';
-                    btn.style.borderColor = '#FF6B35';
-                    btn.style.transform = 'scale(1.05)';
-                };
+                btn.addEventListener('mouseover', function() {
+                    if (!this.disabled) {
+                        this.style.background = 'rgba(255, 107, 53, 0.2)';
+                        this.style.borderColor = '#FF6B35';
+                        this.style.transform = 'scale(1.05)';
+                    }
+                });
 
-                btn.onmouseout = () => {
-                    btn.style.background = 'rgba(255, 255, 255, 0.8)';
-                    btn.style.borderColor = 'rgba(255, 107, 53, 0.3)';
-                    btn.style.transform = 'scale(1)';
-                };
+                btn.addEventListener('mouseout', function() {
+                    if (!this.disabled) {
+                        this.style.background = 'rgba(255, 255, 255, 0.8)';
+                        this.style.borderColor = 'rgba(255, 107, 53, 0.3)';
+                        this.style.transform = 'scale(1)';
+                    }
+                });
 
-                btn.onclick = () => checkAnswer(index, btn);
+                btn.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        checkAnswer(index, this);
+                    }
+                });
+
                 answersContainer.appendChild(btn);
             });
         }
