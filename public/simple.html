@@ -933,7 +933,7 @@
             <!-- SILICONE QUESTIONNAIRE GAME -->
             <div id="questionnaireGame" style="background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%); padding: 50px 40px; border-radius: 30px; margin-bottom: 80px; border: 2px solid rgba(255, 107, 53, 0.6); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25); text-align: center;">
                 <h2 style="margin-bottom: 30px;">🎯 Silicone Knowledge Quiz</h2>
-                <p style="font-size: 16px; color: #666; margin-bottom: 30px; font-weight: 600;">Test your bathroom expertise! Each correct answer = 10 points</p>
+                <p style="font-size: 16px; color: #666; margin-bottom: 30px; font-weight: 600;">Test your bathroom expertise! Each correct answer = 50 points</p>
 
                 <div id="quizContainer" style="max-width: 600px; margin: 0 auto;">
                     <div id="questionDisplay" style="background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
@@ -1459,16 +1459,16 @@
                 btnElement.style.borderColor = '#4CAF50';
                 btnElement.style.color = 'white';
 
-                quizScore += 10;
-                gameScore += 10;
+                quizScore += 50;
+                gameScore += 50;
 
                 // Extra enthusiastic for cash!
                 if (question.cashObsessed) {
-                    showScorePopup('💵 +10 CASH IS KING!', btnElement);
-                    gameScore += 10; // BONUS POINTS FOR CASH
-                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 20px; font-weight: 900; margin-bottom: 20px;">🎉 YES! Chris LOVES cash! +10 BONUS!</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+                    showScorePopup('💵 +50 CASH IS KING!', btnElement);
+                    gameScore += 50; // BONUS POINTS FOR CASH
+                    document.getElementById('questionText').innerHTML = `<div style="color: #4CAF50; font-size: 20px; font-weight: 900; margin-bottom: 20px;">🎉 YES! Chris LOVES cash! +50 BONUS!</div>Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
                 } else {
-                    showScorePopup('+10', btnElement);
+                    showScorePopup('+50', btnElement);
                 }
 
                 // Update scoreboard
@@ -1499,19 +1499,19 @@
             document.getElementById('questionDisplay').style.display = 'none';
             document.getElementById('quizResults').style.display = 'block';
 
-            const percentage = Math.round((quizScore / (quizQuestions.length * 10)) * 100);
+            const percentage = Math.round((quizScore / (quizQuestions.length * 50)) * 100);
             let message = '';
 
             if (percentage === 100) {
-                message = `🎉 Perfect! ${quizScore}/${quizQuestions.length * 10} points! You're a silicone expert!`;
+                message = `🎉 Perfect! ${quizScore}/${quizQuestions.length * 50} points! You're a silicone expert!`;
                 createMassiveConfetti();
             } else if (percentage >= 80) {
-                message = `🌟 Great job! ${quizScore}/${quizQuestions.length * 10} points!`;
+                message = `🌟 Great job! ${quizScore}/${quizQuestions.length * 50} points!`;
                 createConfetti();
             } else if (percentage >= 60) {
-                message = `👍 Good effort! ${quizScore}/${quizQuestions.length * 10} points!`;
+                message = `👍 Good effort! ${quizScore}/${quizQuestions.length * 50} points!`;
             } else {
-                message = `📚 Keep learning! ${quizScore}/${quizQuestions.length * 10} points. Try again!`;
+                message = `📚 Keep learning! ${quizScore}/${quizQuestions.length * 50} points. Try again!`;
             }
 
             document.getElementById('quizResults').innerHTML = message;
