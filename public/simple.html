@@ -14,10 +14,45 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: url('https://images.unsplash.com/photo-1620626011761-996317b8d101?w=1920&q=85') center/cover fixed;
             line-height: 1.6;
             position: relative;
             padding: 40px 20px;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        .video-background::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            pointer-events: none;
         }
 
 
@@ -553,9 +588,232 @@
                 height: 100px;
             }
         }
+
+        /* GAMIFICATION STYLES */
+        #gameScoreboard {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            padding: 20px 25px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 107, 53, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        #gameScoreboard h3 {
+            font-size: 14px;
+            font-weight: 800;
+            color: #FF6B35;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #currentScore {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1a1a1a;
+            margin: 5px 0;
+            text-shadow: 0 2px 10px rgba(255, 107, 53, 0.3);
+        }
+
+        #highScore {
+            font-size: 12px;
+            color: #666;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .mould-spot {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle, #2a2a2a 0%, #1a1a1a 70%);
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 9999;
+            animation: mouldPulse 2s ease-in-out infinite;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5),
+                        inset 0 2px 5px rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .mould-spot:hover {
+            transform: scale(1.2);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        }
+
+        @keyframes mouldPulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.9;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .mould-spot.exploding {
+            animation: mouldExplode 0.5s ease-out forwards;
+        }
+
+        @keyframes mouldExplode {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .score-popup {
+            position: absolute;
+            font-size: 24px;
+            font-weight: 900;
+            color: #FF6B35;
+            pointer-events: none;
+            z-index: 10001;
+            animation: scoreFloat 1s ease-out forwards;
+            text-shadow: 0 2px 10px rgba(255, 107, 53, 0.8);
+        }
+
+        @keyframes scoreFloat {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-80px) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        #badgePanel {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(200%);
+            -webkit-backdrop-filter: blur(30px) saturate(200%);
+            padding: 15px;
+            border-radius: 20px;
+            border: 2px solid rgba(255, 107, 53, 0.6);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            max-width: 250px;
+            transition: all 0.3s ease;
+        }
+
+        #badgePanel.collapsed {
+            width: 60px;
+            height: 60px;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #badgeToggle {
+            cursor: pointer;
+            font-size: 24px;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .badge-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .badge-item.unlocked {
+            background: rgba(255, 107, 53, 0.2);
+        }
+
+        .badge-icon {
+            font-size: 24px;
+            filter: grayscale(100%);
+        }
+
+        .badge-item.unlocked .badge-icon {
+            filter: grayscale(0%);
+            animation: badgeUnlock 0.5s ease-out;
+        }
+
+        @keyframes badgeUnlock {
+            0% { transform: scale(0) rotate(-180deg); }
+            50% { transform: scale(1.3) rotate(10deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .badge-name {
+            font-size: 11px;
+            font-weight: 700;
+            color: #666;
+        }
+
+        .badge-item.unlocked .badge-name {
+            color: #FF6B35;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 9998;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            #gameScoreboard {
+                top: 10px;
+                right: 10px;
+                padding: 15px 20px;
+                min-width: 140px;
+            }
+
+            #currentScore {
+                font-size: 28px;
+            }
+
+            #badgePanel {
+                bottom: 10px;
+                right: 10px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Video Background -->
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="background-video.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- GAME SCOREBOARD -->
+    <div id="gameScoreboard">
+        <h3>🏆 Score</h3>
+        <div id="currentScore">0</div>
+        <div id="highScore">Best: 0</div>
+    </div>
+
     <div class="container">
         <!-- HERO SECTION WITH BLURB -->
         <div class="hero">
@@ -612,6 +870,25 @@
 
         <!-- CONTENT SECTION -->
         <div class="content">
+            <!-- SILICONE QUESTIONNAIRE GAME -->
+            <div id="questionnaireGame" style="background: rgba(255, 255, 255, 0.25); backdrop-filter: blur(40px) saturate(200%); -webkit-backdrop-filter: blur(40px) saturate(200%); padding: 50px 40px; border-radius: 30px; margin-bottom: 80px; border: 2px solid rgba(255, 107, 53, 0.6); box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25); text-align: center;">
+                <h2 style="margin-bottom: 30px;">🎯 Silicone Knowledge Quiz</h2>
+                <p style="font-size: 16px; color: #666; margin-bottom: 30px; font-weight: 600;">Test your bathroom expertise! Each correct answer = 10 points</p>
+
+                <div id="quizContainer" style="max-width: 600px; margin: 0 auto;">
+                    <div id="questionDisplay" style="background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; margin-bottom: 20px;">
+                        <div id="questionText" style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 25px;"></div>
+                        <div id="answersContainer" style="display: flex; flex-direction: column; gap: 12px;"></div>
+                    </div>
+
+                    <button id="startQuizBtn" onclick="startQuiz()" style="background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%); color: white; padding: 18px 50px; border: none; border-radius: 15px; font-size: 18px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4); transition: all 0.3s ease;">
+                        Start Quiz
+                    </button>
+
+                    <div id="quizResults" style="display: none; margin-top: 20px; font-size: 18px; font-weight: 700; color: #FF6B35;"></div>
+                </div>
+            </div>
+
             <h2>Why Choose Us?</h2>
 
             <div class="benefits">
@@ -794,78 +1071,77 @@
         const lyricsDisplay = document.getElementById('lyricsDisplay');
         const lyricsContainer = document.getElementById('lyricsContainer');
 
-        // Lyrics with timing (in seconds) - adjusted to appear slightly before vocals
-        // Shifted -0.3s to compensate for perception lag
+        // Lyrics with timing (in seconds) - adjusted to sync precisely with vocal onset
         const lyrics = [
             { time: 0, text: "[Verse 1]", type: "section" },
-            { time: 4.2, text: "I've seen foundations crumble" },
-            { time: 7.2, text: "watched the water seep on through" },
-            { time: 11, text: "Every crack tells a story" },
-            { time: 14, text: "of the battles we've been through" },
-            { time: 18, text: "But there's Kartell caulking waiting" },
-            { time: 21, text: "stronger than we've ever known" },
-            { time: 25, text: "When everything starts breaking" },
-            { time: 28, text: "we're not facing this alone" },
-            { time: 32, text: "" },
-            { time: 33, text: "[Pre-Chorus]", type: "section" },
-            { time: 34, text: "Don't point your finger at me" },
-            { time: 37, text: "There's a better way to be" },
-            { time: 40, text: "Sealed and protected, standing tall" },
-            { time: 44, text: "" },
-            { time: 45, text: "[Chorus]", type: "section" },
-            { time: 46, text: "I'm only human, I make mistakes" },
-            { time: 50, text: "But silicone won't bend or break" },
-            { time: 54, text: "It holds together what falls apart" },
-            { time: 58, text: "Kartell caulking—that's where we start" },
-            { time: 62, text: "I'm only human, it's true" },
-            { time: 66, text: "But silicone will see me through" },
-            { time: 70, text: "Flexible, faithful, made to last" },
-            { time: 74, text: "Kartell caulking—built to outlast" },
-            { time: 78, text: "" },
-            { time: 79, text: "[Verse 2]", type: "section" },
-            { time: 81, text: "From the kitchen to the rooftop" },
-            { time: 84, text: "every corner of this place" },
-            { time: 88, text: "When the elements come calling" },
-            { time: 91, text: "Kartell stands right there face to face" },
-            { time: 96, text: "Heat and cold won't shake it" },
-            { time: 99, text: "water doesn't stand a chance" },
-            { time: 103, text: "This is more than just a product" },
-            { time: 106, text: "it's a shield, it's our defense" },
-            { time: 110, text: "" },
-            { time: 111, text: "[Pre-Chorus]", type: "section" },
-            { time: 112, text: "Don't put the blame on me" },
-            { time: 115, text: "Trust what it's meant to be" },
-            { time: 118, text: "Holding strong through it all" },
-            { time: 122, text: "" },
-            { time: 123, text: "[Chorus]", type: "section" },
-            { time: 124, text: "I'm only human, I make mistakes" },
-            { time: 128, text: "But silicone won't bend or break" },
-            { time: 132, text: "It holds together what falls apart" },
-            { time: 136, text: "Kartell caulking—that's where we start" },
-            { time: 140, text: "I'm only human, it's true" },
-            { time: 144, text: "But silicone will see me through" },
-            { time: 148, text: "Flexible, faithful, made to last" },
-            { time: 152, text: "Kartell caulking—built to outlast" },
-            { time: 156, text: "" },
-            { time: 157, text: "[Bridge]", type: "section" },
-            { time: 159, text: "We all need something to rely on" },
-            { time: 163, text: "When the world feels like it's gone" },
-            { time: 168, text: "Something steady, something sure" },
-            { time: 172, text: "Kartell's real and will endure" },
-            { time: 177, text: "" },
-            { time: 178, text: "[Final Chorus]", type: "section" },
-            { time: 180, text: "I'm only human, I make mistakes" },
-            { time: 184, text: "But silicone won't bend or break" },
-            { time: 188, text: "It holds together what falls apart" },
-            { time: 192, text: "Kartell caulking—that's where we start" },
-            { time: 196, text: "I'm only human, it's true" },
-            { time: 200, text: "But silicone will see me through" },
-            { time: 204, text: "Flexible, faithful, made to last" },
-            { time: 208, text: "Kartell caulking—built to outlast" },
-            { time: 212, text: "" },
-            { time: 213, text: "[Outro]", type: "section" },
-            { time: 215, text: "Kartell caulking... built to outlast" },
-            { time: 221, text: "Kartell caulking... built to outlast" }
+            { time: 3.2, text: "I've seen foundations crumble" },
+            { time: 6.2, text: "watched the water seep on through" },
+            { time: 10, text: "Every crack tells a story" },
+            { time: 13, text: "of the battles we've been through" },
+            { time: 17, text: "But there's Kartell caulking waiting" },
+            { time: 20, text: "stronger than we've ever known" },
+            { time: 24, text: "When everything starts breaking" },
+            { time: 27, text: "we're not facing this alone" },
+            { time: 31, text: "" },
+            { time: 32, text: "[Pre-Chorus]", type: "section" },
+            { time: 33, text: "Don't point your finger at me" },
+            { time: 36, text: "There's a better way to be" },
+            { time: 39, text: "Sealed and protected, standing tall" },
+            { time: 43, text: "" },
+            { time: 44, text: "[Chorus]", type: "section" },
+            { time: 45, text: "I'm only human, I make mistakes" },
+            { time: 49, text: "But silicone won't bend or break" },
+            { time: 53, text: "It holds together what falls apart" },
+            { time: 57, text: "Kartell caulking—that's where we start" },
+            { time: 61, text: "I'm only human, it's true" },
+            { time: 65, text: "But silicone will see me through" },
+            { time: 69, text: "Flexible, faithful, made to last" },
+            { time: 73, text: "Kartell caulking—built to outlast" },
+            { time: 77, text: "" },
+            { time: 78, text: "[Verse 2]", type: "section" },
+            { time: 80, text: "From the kitchen to the rooftop" },
+            { time: 83, text: "every corner of this place" },
+            { time: 87, text: "When the elements come calling" },
+            { time: 90, text: "Kartell stands right there face to face" },
+            { time: 95, text: "Heat and cold won't shake it" },
+            { time: 98, text: "water doesn't stand a chance" },
+            { time: 102, text: "This is more than just a product" },
+            { time: 105, text: "it's a shield, it's our defense" },
+            { time: 109, text: "" },
+            { time: 110, text: "[Pre-Chorus]", type: "section" },
+            { time: 111, text: "Don't put the blame on me" },
+            { time: 114, text: "Trust what it's meant to be" },
+            { time: 117, text: "Holding strong through it all" },
+            { time: 121, text: "" },
+            { time: 122, text: "[Chorus]", type: "section" },
+            { time: 123, text: "I'm only human, I make mistakes" },
+            { time: 127, text: "But silicone won't bend or break" },
+            { time: 131, text: "It holds together what falls apart" },
+            { time: 135, text: "Kartell caulking—that's where we start" },
+            { time: 139, text: "I'm only human, it's true" },
+            { time: 143, text: "But silicone will see me through" },
+            { time: 147, text: "Flexible, faithful, made to last" },
+            { time: 151, text: "Kartell caulking—built to outlast" },
+            { time: 155, text: "" },
+            { time: 156, text: "[Bridge]", type: "section" },
+            { time: 158, text: "We all need something to rely on" },
+            { time: 162, text: "When the world feels like it's gone" },
+            { time: 167, text: "Something steady, something sure" },
+            { time: 171, text: "Kartell's real and will endure" },
+            { time: 176, text: "" },
+            { time: 177, text: "[Final Chorus]", type: "section" },
+            { time: 179, text: "I'm only human, I make mistakes" },
+            { time: 183, text: "But silicone won't bend or break" },
+            { time: 187, text: "It holds together what falls apart" },
+            { time: 191, text: "Kartell caulking—that's where we start" },
+            { time: 195, text: "I'm only human, it's true" },
+            { time: 199, text: "But silicone will see me through" },
+            { time: 203, text: "Flexible, faithful, made to last" },
+            { time: 207, text: "Kartell caulking—built to outlast" },
+            { time: 211, text: "" },
+            { time: 212, text: "[Outro]", type: "section" },
+            { time: 214, text: "Kartell caulking... built to outlast" },
+            { time: 220, text: "Kartell caulking... built to outlast" }
         ];
 
         let currentLyricIndex = 0;
@@ -982,6 +1258,243 @@
                 lyricsDisplay.style.maxHeight = '0';
             }
         });
+
+        // ============= QUESTIONNAIRE GAME =============
+        const quizQuestions = [
+            {
+                question: "How long should you wait before using your shower after new silicone is applied?",
+                answers: ["2-4 hours", "12 hours", "24-48 hours", "1 week"],
+                correct: 2
+            },
+            {
+                question: "What's the main benefit of anti-fungal silicone?",
+                answers: ["It's cheaper", "Resists mould growth", "Dries faster", "Easier to remove"],
+                correct: 1
+            },
+            {
+                question: "What's included in the $500 service?",
+                answers: ["Just new silicone", "Silicone + cleaning", "Remove old + clean + new silicone", "Tile replacement"],
+                correct: 2
+            },
+            {
+                question: "When are services available?",
+                answers: ["Weekdays only", "Anytime", "Weekend mornings", "24/7"],
+                correct: 2
+            },
+            {
+                question: "What's the warranty period for workmanship?",
+                answers: ["30 days", "6 months", "12 months", "Lifetime"],
+                correct: 2
+            },
+            {
+                question: "What payment methods are accepted?",
+                answers: ["Cash only", "Credit card only", "Cash, bank transfer, or credit card", "PayPal only"],
+                correct: 2
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let quizScore = 0;
+        let gameScore = parseInt(localStorage.getItem('kartellGameScore') || '0');
+        let highScore = parseInt(localStorage.getItem('kartellHighScore') || '0');
+
+        // Initialize scoreboard
+        document.getElementById('currentScore').textContent = gameScore;
+        document.getElementById('highScore').textContent = `Best: ${highScore}`;
+
+        function startQuiz() {
+            currentQuestionIndex = 0;
+            quizScore = 0;
+            document.getElementById('startQuizBtn').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'none';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuestionIndex >= quizQuestions.length) {
+                finishQuiz();
+                return;
+            }
+
+            const question = quizQuestions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = `Question ${currentQuestionIndex + 1}/${quizQuestions.length}: ${question.question}`;
+
+            const answersContainer = document.getElementById('answersContainer');
+            answersContainer.innerHTML = '';
+
+            question.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.textContent = answer;
+                btn.style.cssText = `
+                    background: rgba(255, 255, 255, 0.8);
+                    border: 2px solid rgba(255, 107, 53, 0.3);
+                    padding: 15px 20px;
+                    border-radius: 12px;
+                    font-size: 16px;
+                    font-weight: 700;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    color: #1a1a1a;
+                `;
+
+                btn.onmouseover = () => {
+                    btn.style.background = 'rgba(255, 107, 53, 0.2)';
+                    btn.style.borderColor = '#FF6B35';
+                    btn.style.transform = 'scale(1.05)';
+                };
+
+                btn.onmouseout = () => {
+                    btn.style.background = 'rgba(255, 255, 255, 0.8)';
+                    btn.style.borderColor = 'rgba(255, 107, 53, 0.3)';
+                    btn.style.transform = 'scale(1)';
+                };
+
+                btn.onclick = () => checkAnswer(index, btn);
+                answersContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIndex, btnElement) {
+            const question = quizQuestions[currentQuestionIndex];
+            const allButtons = document.getElementById('answersContainer').querySelectorAll('button');
+
+            // Disable all buttons
+            allButtons.forEach(btn => btn.disabled = true);
+
+            if (selectedIndex === question.correct) {
+                // Correct answer
+                btnElement.style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                btnElement.style.borderColor = '#4CAF50';
+                btnElement.style.color = 'white';
+
+                quizScore += 10;
+                gameScore += 10;
+
+                // Show score popup
+                showScorePopup('+10', btnElement);
+
+                // Update scoreboard
+                updateScoreboard();
+
+                // Confetti for correct answer
+                createConfetti(btnElement.getBoundingClientRect());
+            } else {
+                // Wrong answer
+                btnElement.style.background = 'linear-gradient(135deg, #f44336 0%, #da190b 100%)';
+                btnElement.style.borderColor = '#f44336';
+                btnElement.style.color = 'white';
+
+                // Highlight correct answer
+                allButtons[question.correct].style.background = 'linear-gradient(135deg, #4CAF50 0%, #45a049 100%)';
+                allButtons[question.correct].style.borderColor = '#4CAF50';
+                allButtons[question.correct].style.color = 'white';
+            }
+
+            // Move to next question after delay
+            setTimeout(() => {
+                currentQuestionIndex++;
+                showQuestion();
+            }, 1500);
+        }
+
+        function finishQuiz() {
+            document.getElementById('questionDisplay').style.display = 'none';
+            document.getElementById('quizResults').style.display = 'block';
+
+            const percentage = Math.round((quizScore / (quizQuestions.length * 10)) * 100);
+            let message = '';
+
+            if (percentage === 100) {
+                message = `🎉 Perfect! ${quizScore}/${quizQuestions.length * 10} points! You're a silicone expert!`;
+                createMassiveConfetti();
+            } else if (percentage >= 80) {
+                message = `🌟 Great job! ${quizScore}/${quizQuestions.length * 10} points!`;
+                createConfetti();
+            } else if (percentage >= 60) {
+                message = `👍 Good effort! ${quizScore}/${quizQuestions.length * 10} points!`;
+            } else {
+                message = `📚 Keep learning! ${quizScore}/${quizQuestions.length * 10} points. Try again!`;
+            }
+
+            document.getElementById('quizResults').innerHTML = message;
+
+            // Show restart button
+            document.getElementById('startQuizBtn').textContent = 'Play Again';
+            document.getElementById('startQuizBtn').style.display = 'inline-block';
+        }
+
+        function updateScoreboard() {
+            document.getElementById('currentScore').textContent = gameScore;
+
+            if (gameScore > highScore) {
+                highScore = gameScore;
+                localStorage.setItem('kartellHighScore', highScore);
+                document.getElementById('highScore').textContent = `Best: ${highScore}`;
+                document.getElementById('highScore').style.color = '#FF6B35';
+
+                setTimeout(() => {
+                    document.getElementById('highScore').style.color = '#666';
+                }, 2000);
+            }
+
+            localStorage.setItem('kartellGameScore', gameScore);
+        }
+
+        function showScorePopup(text, element) {
+            const popup = document.createElement('div');
+            popup.className = 'score-popup';
+            popup.textContent = text;
+
+            const rect = element.getBoundingClientRect();
+            popup.style.left = rect.left + rect.width / 2 + 'px';
+            popup.style.top = rect.top + 'px';
+
+            document.body.appendChild(popup);
+
+            setTimeout(() => {
+                popup.remove();
+            }, 1000);
+        }
+
+        function createConfetti(rect) {
+            const colors = ['#FF6B35', '#F7931E', '#4CAF50', '#2196F3', '#9C27B0'];
+            const count = rect ? 15 : 30;
+
+            for (let i = 0; i < count; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = rect ? (rect.left + Math.random() * rect.width) + 'px' : (Math.random() * window.innerWidth) + 'px';
+                confetti.style.top = rect ? rect.top + 'px' : '0px';
+                confetti.style.animation = `confetti ${2 + Math.random() * 2}s linear forwards`;
+                confetti.style.animationDelay = (Math.random() * 0.5) + 's';
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        }
+
+        function createMassiveConfetti() {
+            const colors = ['#FF6B35', '#F7931E', '#4CAF50', '#2196F3', '#9C27B0', '#FFD700'];
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = (Math.random() * window.innerWidth) + 'px';
+                confetti.style.top = '-20px';
+                confetti.style.width = (10 + Math.random() * 10) + 'px';
+                confetti.style.height = (10 + Math.random() * 10) + 'px';
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.animation = `confetti ${3 + Math.random() * 3}s linear forwards`;
+                confetti.style.animationDelay = (Math.random() * 1) + 's';
+
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 6000);
+            }
+        }
     </script>
 </body>
 </html>
