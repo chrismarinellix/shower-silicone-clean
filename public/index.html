@@ -969,11 +969,6 @@
             Your browser does not support the audio element.
         </audio>
 
-        <!-- Background Music (very soft, auto-playing) -->
-        <audio id="backgroundAudio" loop preload="auto">
-            <source src="kartell-song.mp3" type="audio/mpeg">
-        </audio>
-
         <!-- CONTENT SECTION -->
         <div class="content">
             <!-- SILICONE QUESTIONNAIRE GAME -->
@@ -1173,28 +1168,11 @@
 
     <script>
         const audio = document.getElementById('audio');
-        const backgroundAudio = document.getElementById('backgroundAudio');
         const playButton = document.getElementById('playButton');
         const lyricsDisplay = document.getElementById('lyricsDisplay');
         const lyricsContainer = document.getElementById('lyricsContainer');
 
-        // Start background music very softly - modern browsers require user interaction
-        let backgroundMusicStarted = false;
-
-        function startBackgroundMusic() {
-            if (!backgroundMusicStarted && audio.paused) {
-                backgroundAudio.volume = 0.02; // Very soft (2% volume)
-                backgroundAudio.play().catch(() => {
-                    // Silently fail if blocked
-                });
-                backgroundMusicStarted = true;
-            }
-        }
-
-        // Try to start on any user interaction
-        ['click', 'touchstart', 'keydown'].forEach(eventType => {
-            document.addEventListener(eventType, startBackgroundMusic, { once: true });
-        });
+        // Background music disabled - user controls playback with the play button
 
         // Lyrics with timing (in seconds) - adjusted to sync precisely with vocal onset
         const lyrics = [
@@ -1273,25 +1251,18 @@
 
         function togglePlay() {
             if (audio.paused) {
-                // Stop and fade out background music
-                backgroundAudio.pause();
-                backgroundAudio.currentTime = 0;
-
-                // Start main audio from beginning at normal volume
+                // Start playing music
                 audio.currentTime = 0;
                 audio.volume = 1.0;
                 audio.play();
                 playButton.classList.add('playing');
                 lyricsDisplay.style.maxHeight = '400px';
             } else {
+                // Stop playing music
                 audio.pause();
+                audio.currentTime = 0;
                 playButton.classList.remove('playing');
-
-                // Resume background music softly (only if it was started)
-                if (backgroundMusicStarted) {
-                    backgroundAudio.volume = 0.02;
-                    backgroundAudio.play().catch(() => {});
-                }
+                lyricsDisplay.style.maxHeight = '0';
             }
         }
 
@@ -1389,12 +1360,7 @@
             playButton.classList.remove('playing');
             lyricsDisplay.style.maxHeight = '0';
             currentLyricIndex = 0;
-
-            // Resume background music softly when main audio ends (only if it was started)
-            if (backgroundMusicStarted) {
-                backgroundAudio.volume = 0.02;
-                backgroundAudio.play().catch(() => {});
-            }
+            audio.currentTime = 0;
         });
 
         audio.addEventListener('pause', () => {
