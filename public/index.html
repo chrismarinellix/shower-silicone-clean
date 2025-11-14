@@ -921,7 +921,7 @@
             <h1>Shower • Silicone</h1>
 
             <!-- THE BLURB - FRONT AND CENTER -->
-            <div class="blurb">
+            <div class="blurb" style="background: rgba(255, 255, 255, 0.05);">
                 <p>
                     Is your shower silicone looking black, mouldy, and embarrassing? You've lived with that unhealthy bathroom for too long.
                 </p>
@@ -951,7 +951,7 @@
 
                     <!-- LYRICS DISPLAY -->
                     <div id="lyricsDisplay" style="margin-top: 30px; max-height: 0; overflow: hidden; transition: max-height 0.5s ease;">
-                        <div style="background: rgba(255, 255, 255, 0.5); padding: 30px; border-radius: 20px; max-height: 300px; overflow-y: auto; font-size: 15px; line-height: 2; color: #1a1a1a; font-weight: 600;">
+                        <div id="lyricsScrollContainer" style="background: rgba(255, 255, 255, 0.03); padding: 30px; border-radius: 20px; max-height: 300px; overflow-y: auto; font-size: 15px; line-height: 2; color: #1a1a1a; font-weight: 600; scroll-behavior: auto;">
                             <div id="lyricsContainer"></div>
                         </div>
                     </div>
@@ -1171,6 +1171,10 @@
         const playButton = document.getElementById('playButton');
         const lyricsDisplay = document.getElementById('lyricsDisplay');
         const lyricsContainer = document.getElementById('lyricsContainer');
+        const lyricsScrollContainer = document.getElementById('lyricsScrollContainer');
+
+        // Store the scroll position to prevent page jumping
+        let savedScrollPosition = 0;
 
         // Background music disabled - user controls playback with the play button
 
@@ -1293,12 +1297,16 @@
         }
 
         function displayLyrics(index) {
+            // Save current page scroll position
+            savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+
             // Don't rebuild DOM every time - just update styles for smoothness
             const allChildren = Array.from(lyricsContainer.children);
 
             // If container is empty or structure changed, rebuild
             if (allChildren.length === 0) {
                 buildLyricsDOM();
+                return;
             }
 
             // Update styles only
@@ -1313,6 +1321,15 @@
                     line.style.transform = 'scale(1.1)';
                     line.style.textShadow = '0 3px 15px rgba(255, 107, 53, 0.5)';
                     line.style.opacity = '1';
+
+                    // Scroll within the lyrics container only, not the page
+                    const containerRect = lyricsScrollContainer.getBoundingClientRect();
+                    const lineRect = line.getBoundingClientRect();
+                    const relativeTop = lineRect.top - containerRect.top;
+
+                    if (relativeTop < 50 || relativeTop > containerRect.height - 50) {
+                        lyricsScrollContainer.scrollTop += relativeTop - (containerRect.height / 2);
+                    }
                 } else {
                     // Other lines with smooth fade
                     const distance = Math.abs(lineIndex - index);
@@ -1328,11 +1345,8 @@
                 }
             });
 
-            // Smooth scroll to current
-            const currentLine = allChildren.find(line => parseInt(line.dataset.index) === index);
-            if (currentLine) {
-                currentLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            // Restore page scroll position to prevent jumping
+            window.scrollTo(0, savedScrollPosition);
         }
 
         function buildLyricsDOM() {
