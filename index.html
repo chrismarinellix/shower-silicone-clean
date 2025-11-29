@@ -344,6 +344,192 @@
             }
         }
 
+        /* Booking Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 10px;
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .action-buttons {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e5e5e5;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1a1a1a;
+        }
+
+        .action-button:hover {
+            border-color: #FF6B35;
+            background: #fff5f2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+        }
+
+        .action-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .action-desc {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .time-slots-section {
+            margin-top: 20px;
+        }
+
+        .slots-header {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1a1a;
+        }
+
+        .weekend-group {
+            margin-bottom: 25px;
+        }
+
+        .weekend-date {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FF6B35;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .time-slot {
+            padding: 12px;
+            background: #f8f9fa;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1a1a1a;
+            display: block;
+        }
+
+        .time-slot:hover {
+            background: #FF6B35;
+            border-color: #FF6B35;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                padding: 20px;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         /* MUSIC PLAYER SECTION */
         .music-section {
             background: rgba(255, 255, 255, 0.08);
@@ -599,9 +785,12 @@
                 </div>
             </div>
 
-            <div class="phone-box">
-                <div class="phone-label">Call Chris Now</div>
-                <a href="tel:0417035368" class="phone">0417 035 368</a>
+            <div class="phone-box" onclick="openBookingModal()" style="cursor: pointer;">
+                <div class="phone-label">📞 📅 💬</div>
+                <div class="phone" style="text-decoration: none;">Fix My Shower</div>
+                <div style="font-size: 14px; margin-top: 8px; opacity: 0.9; font-weight: 600;">
+                    Call • Book • Text
+                </div>
             </div>
         </div>
 
@@ -687,7 +876,12 @@
                 </div>
 
                 <p>Get your shower looking brand new. Call now to book your appointment.</p>
-                <a href="tel:0417035368" class="cta-button">Call Chris Now: 0417 035 368</a>
+                <div class="cta-button" onclick="openBookingModal()" style="cursor: pointer;">
+                    Fix My Shower • Call, Book or Text
+                </div>
+                <div style="margin-top: 20px; font-size: 18px; color: rgba(255, 255, 255, 0.9); font-weight: 600;">
+                    Chris: 0417 035 368
+                </div>
             </div>
 
             <!-- PAYMENT TERMS -->
@@ -982,6 +1176,120 @@
                 lyricsDisplay.style.maxHeight = '0';
             }
         });
+    </script>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="bookingModal" onclick="closeBookingModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <button class="close-button" onclick="closeBookingModal()">×</button>
+                <div class="modal-title">Contact Chris</div>
+                <div class="modal-subtitle">Call now or book a time</div>
+            </div>
+
+            <div class="modal-body">
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="tel:0417035368" class="action-button">
+                        <div class="action-icon">📞</div>
+                        <div class="action-text">
+                            <div class="action-title">Call Now</div>
+                            <div class="action-desc">Speak directly with Chris</div>
+                        </div>
+                    </a>
+
+                    <a href="sms:0417035368?&body=Hi%20Chris%2C%20I%27m%20interested%20in%20your%20shower%20silicone%20service.%20Can%20we%20discuss%3F" class="action-button">
+                        <div class="action-icon">💬</div>
+                        <div class="action-text">
+                            <div class="action-title">Send a Text</div>
+                            <div class="action-desc">Quick message to get started</div>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Time Slots -->
+                <div class="time-slots-section">
+                    <div class="slots-header">📅 Book a Time Slot</div>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">
+                        Click a time to send a booking request via text
+                    </p>
+
+                    <div id="timeSlotsContainer"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Booking Modal Functions
+        function openBookingModal() {
+            const modal = document.getElementById('bookingModal');
+            modal.classList.add('active');
+            generateTimeSlots();
+        }
+
+        function closeBookingModal(event) {
+            if (!event || event.target.id === 'bookingModal') {
+                const modal = document.getElementById('bookingModal');
+                modal.classList.remove('active');
+            }
+        }
+
+        function generateTimeSlots() {
+            const container = document.getElementById('timeSlotsContainer');
+            const weekends = getNextWeekends();
+            const timeSlots = ['8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM'];
+
+            let html = '';
+            weekends.forEach(weekend => {
+                html += `
+                    <div class="weekend-group">
+                        <div class="weekend-date">${weekend.formatted}</div>
+                        <div class="time-slots">
+                `;
+
+                timeSlots.forEach(time => {
+                    const smsMessage = `Hi Chris, I'd like to book for ${weekend.formatted} at ${time}. Please confirm.`;
+                    const smsLink = `sms:0417035368?&body=${encodeURIComponent(smsMessage)}`;
+                    html += `<a href="${smsLink}" class="time-slot">${time}</a>`;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function getNextWeekends() {
+            const weekends = [];
+            const today = new Date();
+            let daysChecked = 0;
+
+            while (weekends.length < 8 && daysChecked < 60) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() + daysChecked);
+                const dayOfWeek = checkDate.getDay();
+
+                // 0 = Sunday, 6 = Saturday
+                if (dayOfWeek === 0 || dayOfWeek === 6) {
+                    weekends.push({
+                        date: checkDate,
+                        dayName: dayOfWeek === 6 ? 'Saturday' : 'Sunday',
+                        formatted: checkDate.toLocaleDateString('en-AU', {
+                            weekday: 'long',
+                            month: 'long',
+                            day: 'numeric'
+                        })
+                    });
+                }
+                daysChecked++;
+            }
+
+            return weekends;
+        }
     </script>
 </body>
 </html>

@@ -100,7 +100,7 @@ The site uses `netlify.toml` for configuration:
 ## Project Structure
 
 ```
-silicone-spa/
+silicone-website/
 ├── public/
 │   ├── images/              # Image assets
 │   │   ├── logo.png
