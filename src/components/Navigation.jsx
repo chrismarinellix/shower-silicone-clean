@@ -1,60 +1,55 @@
-import { Button } from 'antd';
+import { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { PhoneOutlined } from '@ant-design/icons';
+import '../styles/Navigation.css';
 
 function Navigation() {
-  const scrollToContact = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location]);
 
   return (
-    <header
-      style={{
-        position: 'fixed',
-        top: 0,
-        zIndex: 1000,
-        width: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(8px)',
-        boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-        padding: '0 20px',
-        height: '70px'
-      }}
-    >
-      {/* Logo */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <span style={{
-          fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
-          fontWeight: '900',
-          color: '#1a1a1a',
-          whiteSpace: 'nowrap'
-        }}>
-          Shower - Silicone
-        </span>
-      </div>
+    <nav className="navbar">
+      <div className="nav-container">
+        {/* Logo */}
+        <Link to="/" className="nav-logo">
+          <span className="logo-icon">✨</span>
+          <span>Shower Silicone</span>
+        </Link>
 
-      {/* Call Button */}
-      <Button
-        type="primary"
-        icon={<PhoneOutlined />}
-        onClick={scrollToContact}
-        style={{
-          background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-          border: 'none',
-          height: '40px',
-          fontWeight: '700',
-          boxShadow: '0 4px 12px rgba(255, 107, 53, 0.3)',
-          fontSize: 'clamp(14px, 2vw, 16px)'
-        }}
-      >
-        <span style={{ display: window.innerWidth > 480 ? 'inline' : 'none' }}>Call </span>0417 035 368
-      </Button>
-    </header>
+        {/* Mobile Toggle */}
+        <div 
+          className={`nav-toggle ${isOpen ? 'active' : ''}`} 
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        {/* Menu */}
+        <div className={`nav-menu ${isOpen ? 'active' : ''}`}>
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/what-we-do" className="nav-link">Services</Link>
+          <Link to="/why-replace" className="nav-link">Why Us</Link>
+          <Link to="/how-it-works" className="nav-link">Process</Link>
+          <Link to="/blog" className="nav-link">Blog</Link>
+          
+          <Link 
+            to="/contact" 
+            className="nav-link nav-cta"
+            style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+          >
+            <PhoneOutlined /> Call 0417 035 368
+          </Link>
+        </div>
+      </div>
+    </nav>
   );
 }
 

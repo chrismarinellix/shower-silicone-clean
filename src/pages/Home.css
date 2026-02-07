@@ -30,8 +30,36 @@
   font-weight: 900;
   color: white;
   line-height: 1.1;
-  margin-bottom: 40px;
+  margin-bottom: 10px;
   text-transform: uppercase;
+  text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+}
+
+/* Glitch Price Effect */
+.price-glitch {
+  font-size: 4rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow:
+    0 0 20px rgba(255,255,255,0.5),
+    0 0 40px rgba(255,107,53,0.5);
+}
+
+/* Animated gradient text */
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #fff, #FFD700, #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-shift 3s ease infinite;
 }
 
 /* BLURB BOX */

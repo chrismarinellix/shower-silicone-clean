@@ -6,8 +6,35 @@ import {
   CloseOutlined,
   DollarOutlined
 } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 
 const { Title, Paragraph, Text } = Typography;
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5 }
+  }
+};
+
+const pageVariants = {
+  initial: { opacity: 0, x: -20 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: 20 }
+};
 
 function WhyReplace() {
   const healthConcerns = [
@@ -120,7 +147,14 @@ function WhyReplace() {
   ];
 
   return (
-    <div style={{ background: '#f8f9fa' }}>
+    <motion.div 
+      style={{ background: '#f8f9fa' }}
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.5 }}
+    >
       {/* Hero Section */}
       <div style={{
         background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
@@ -129,12 +163,18 @@ function WhyReplace() {
         color: 'white'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <Title level={1} style={{ color: 'white', marginBottom: '16px', fontWeight: '900', fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-            Why Replace Your Bathroom Silicone?
-          </Title>
-          <Paragraph style={{ color: 'white', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', opacity: 0.95 }}>
-            Understanding the importance of fresh, clean silicone sealant
-          </Paragraph>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <Title level={1} style={{ color: 'white', marginBottom: '16px', fontWeight: '900', fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+              Why Replace Your Bathroom Silicone?
+            </Title>
+            <Paragraph style={{ color: 'white', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', opacity: 0.95 }}>
+              Understanding the importance of fresh, clean silicone sealant
+            </Paragraph>
+          </motion.div>
         </div>
       </div>
 
@@ -143,30 +183,44 @@ function WhyReplace() {
         <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#2C2C2C', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
           Health & Safety Concerns
         </Title>
-        <Row gutter={[32, 32]}>
-          {healthConcerns.map((concern, index) => (
-            <Col xs={24} sm={12} key={index}>
-              <Card
-                hoverable
-                style={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  border: '1px solid #e8e3da'
-                }}
-              >
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>{concern.icon}</div>
-                  <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
-                    {concern.title}
-                  </Title>
-                  <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
-                    {concern.description}
-                  </Paragraph>
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <Row gutter={[32, 32]}>
+            {healthConcerns.map((concern, index) => (
+              <Col xs={24} sm={12} key={index}>
+                <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                  <Card
+                    hoverable
+                    style={{
+                      height: '100%',
+                      borderRadius: '12px',
+                      border: '1px solid #e8e3da'
+                    }}
+                  >
+                    <div style={{ textAlign: 'center' }}>
+                      <motion.div 
+                        style={{ fontSize: '48px', marginBottom: '16px' }}
+                        whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
+                      >
+                        {concern.icon}
+                      </motion.div>
+                      <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
+                        {concern.title}
+                      </Title>
+                      <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
+                        {concern.description}
+                      </Paragraph>
+                    </div>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
+        </motion.div>
       </div>
 
       {/* Aesthetic & Value Benefits */}
@@ -175,20 +229,29 @@ function WhyReplace() {
           <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#2C2C2C', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
             Aesthetic & Value Benefits
           </Title>
-          <Row gutter={[32, 32]}>
-            {aestheticBenefits.map((benefit, index) => (
-              <Col xs={24} sm={12} key={index}>
-                <Card style={{ height: '100%', borderRadius: '12px' }}>
-                  <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
-                    {benefit.icon} {benefit.title}
-                  </Title>
-                  <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
-                    {benefit.description}
-                  </Paragraph>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
+            <Row gutter={[32, 32]}>
+              {aestheticBenefits.map((benefit, index) => (
+                <Col xs={24} sm={12} key={index}>
+                  <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                    <Card style={{ height: '100%', borderRadius: '12px' }}>
+                      <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
+                        {benefit.icon} {benefit.title}
+                      </Title>
+                      <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
+                        {benefit.description}
+                      </Paragraph>
+                    </Card>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </motion.div>
         </div>
       </div>
 
@@ -197,9 +260,16 @@ function WhyReplace() {
         <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#2C2C2C', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
           Understanding Silicone Degradation
         </Title>
-        <Card style={{ borderRadius: '12px', padding: '20px' }}>
-          <Timeline mode="left" items={timelineItems} />
-        </Card>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <Card style={{ borderRadius: '12px', padding: '20px' }}>
+            <Timeline mode="left" items={timelineItems} />
+          </Card>
+        </motion.div>
       </div>
 
       {/* DIY vs Professional */}
@@ -210,42 +280,58 @@ function WhyReplace() {
           </Title>
           <Row gutter={[32, 32]}>
             <Col xs={24} md={12}>
-              <Card
-                style={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  border: '2px solid #ef4444'
-                }}
+              <motion.div
+                initial={{ opacity: 0, x: -50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                style={{ height: '100%' }}
               >
-                <Title level={3} style={{ color: '#ef4444', marginBottom: '24px' }}>
-                  DIY Approach
-                </Title>
-                {diyIssues.map((issue, index) => (
-                  <div key={index} style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-                    <CloseOutlined style={{ fontSize: '20px', color: '#ef4444', marginTop: '4px' }} />
-                    <Text style={{ color: '#2C2C2C' }}>{issue}</Text>
-                  </div>
-                ))}
-              </Card>
+                <Card
+                  style={{
+                    height: '100%',
+                    borderRadius: '12px',
+                    border: '2px solid #ef4444'
+                  }}
+                >
+                  <Title level={3} style={{ color: '#ef4444', marginBottom: '24px' }}>
+                    DIY Approach
+                  </Title>
+                  {diyIssues.map((issue, index) => (
+                    <div key={index} style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                      <CloseOutlined style={{ fontSize: '20px', color: '#ef4444', marginTop: '4px' }} />
+                      <Text style={{ color: '#2C2C2C' }}>{issue}</Text>
+                    </div>
+                  ))}
+                </Card>
+              </motion.div>
             </Col>
             <Col xs={24} md={12}>
-              <Card
-                style={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  border: '2px solid #10b981'
-                }}
+              <motion.div
+                initial={{ opacity: 0, x: 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                style={{ height: '100%' }}
               >
-                <Title level={3} style={{ color: '#10b981', marginBottom: '24px' }}>
-                  Professional Service
-                </Title>
-                {professionalBenefits.map((benefit, index) => (
-                  <div key={index} style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-                    <CheckOutlined style={{ fontSize: '20px', color: '#10b981', marginTop: '4px' }} />
-                    <Text style={{ color: '#2C2C2C' }}>{benefit}</Text>
-                  </div>
-                ))}
-              </Card>
+                <Card
+                  style={{
+                    height: '100%',
+                    borderRadius: '12px',
+                    border: '2px solid #10b981'
+                  }}
+                >
+                  <Title level={3} style={{ color: '#10b981', marginBottom: '24px' }}>
+                    Professional Service
+                  </Title>
+                  {professionalBenefits.map((benefit, index) => (
+                    <div key={index} style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                      <CheckOutlined style={{ fontSize: '20px', color: '#10b981', marginTop: '4px' }} />
+                      <Text style={{ color: '#2C2C2C' }}>{benefit}</Text>
+                    </div>
+                  ))}
+                </Card>
+              </motion.div>
             </Col>
           </Row>
         </div>
@@ -258,28 +344,33 @@ function WhyReplace() {
         </Title>
         <Row gutter={[48, 32]} align="middle" justify="center">
           <Col xs={24} md={10}>
-            <Card
-              style={{
-                borderRadius: '12px',
-                textAlign: 'center',
-                border: '2px solid #FF6B35'
-              }}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <Title level={3} style={{ color: '#2C2C2C', fontWeight: '800' }}>
-                Professional Silicone Replacement
-              </Title>
-              <div style={{
-                fontSize: '48px',
-                fontWeight: 'bold',
-                color: '#FF6B35',
-                margin: '20px 0'
-              }}>
-                $150 - $300
-              </div>
-              <Paragraph style={{ color: '#6B6B6B' }}>
-                Complete shower or bath service with premium materials
-              </Paragraph>
-            </Card>
+              <Card
+                style={{
+                  borderRadius: '12px',
+                  textAlign: 'center',
+                  border: '2px solid #FF6B35'
+                }}
+              >
+                <Title level={3} style={{ color: '#2C2C2C', fontWeight: '800' }}>
+                  Professional Silicone Replacement
+                </Title>
+                <div style={{
+                  fontSize: '48px',
+                  fontWeight: 'bold',
+                  color: '#FF6B35',
+                  margin: '20px 0'
+                }}>
+                  $150 - $300
+                </div>
+                <Paragraph style={{ color: '#6B6B6B' }}>
+                  Complete shower or bath service with premium materials
+                </Paragraph>
+              </Card>
+            </motion.div>
           </Col>
           <Col xs={24} md={2} style={{ textAlign: 'center' }}>
             <Title level={3} style={{ color: '#2C2C2C' }}>vs</Title>
@@ -317,11 +408,16 @@ function WhyReplace() {
       </div>
 
       {/* CTA Section */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%)',
-        padding: '60px 20px',
-        textAlign: 'center'
-      }}>
+      <motion.div 
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%)',
+          padding: '60px 20px',
+          textAlign: 'center'
+        }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <Title level={2} style={{ color: '#2C2C2C', marginBottom: '16px', fontWeight: '800', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
             Ready for a Fresh, Clean Bathroom?
@@ -331,40 +427,48 @@ function WhyReplace() {
           </Paragraph>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/contact">
-              <button style={{
-                height: '50px',
-                fontSize: '16px',
-                padding: '0 40px',
-                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-                border: 'none',
-                borderRadius: '6px',
-                color: 'white',
-                cursor: 'pointer',
-                fontWeight: '500',
-                boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
-              }}>
+              <motion.button 
+                style={{
+                  height: '50px',
+                  fontSize: '16px',
+                  padding: '0 40px',
+                  background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+                  border: 'none',
+                  borderRadius: '6px',
+                  color: 'white',
+                  cursor: 'pointer',
+                  fontWeight: '500',
+                  boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Get Your Free Quote
-              </button>
+              </motion.button>
             </Link>
             <Link to="/when-to-replace">
-              <button style={{
-                height: '50px',
-                fontSize: '16px',
-                padding: '0 40px',
-                background: 'white',
-                border: '2px solid #FF6B35',
-                borderRadius: '6px',
-                color: '#FF6B35',
-                cursor: 'pointer',
-                fontWeight: '500'
-              }}>
+              <motion.button 
+                style={{
+                  height: '50px',
+                  fontSize: '16px',
+                  padding: '0 40px',
+                  background: 'white',
+                  border: '2px solid #FF6B35',
+                  borderRadius: '6px',
+                  color: '#FF6B35',
+                  cursor: 'pointer',
+                  fontWeight: '500'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 Check If You Need Replacement
-              </button>
+              </motion.button>
             </Link>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

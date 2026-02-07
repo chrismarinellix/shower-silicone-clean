@@ -1,8 +1,35 @@
 import { Link } from 'react-router-dom';
 import { Row, Col, Card, Typography } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons';
+import { motion } from 'framer-motion';
 
 const { Title, Paragraph } = Typography;
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
+const pageVariants = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 }
+};
 
 function WhatWeDo() {
   const services = [
@@ -88,7 +115,14 @@ function WhatWeDo() {
   ];
 
   return (
-    <div style={{ background: '#f8f9fa' }}>
+    <motion.div 
+      style={{ background: '#f8f9fa' }}
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={{ duration: 0.5 }}
+    >
       {/* Hero Section */}
       <div style={{
         background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
@@ -97,12 +131,18 @@ function WhatWeDo() {
         color: 'white'
       }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          <Title level={1} style={{ color: 'white', marginBottom: '16px', fontWeight: '900', fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
-            What We Do
-          </Title>
-          <Paragraph style={{ color: 'white', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', opacity: 0.95 }}>
-            Professional bathroom silicone removal and replacement services
-          </Paragraph>
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <Title level={1} style={{ color: 'white', marginBottom: '16px', fontWeight: '900', fontSize: 'clamp(2rem, 5vw, 3.5rem)' }}>
+              What We Do
+            </Title>
+            <Paragraph style={{ color: 'white', fontSize: 'clamp(1rem, 2.5vw, 1.4rem)', opacity: 0.95 }}>
+              Professional bathroom silicone removal and replacement services
+            </Paragraph>
+          </motion.div>
         </div>
       </div>
 
@@ -118,35 +158,50 @@ function WhatWeDo() {
           </Paragraph>
         </div>
 
-        <Row gutter={[32, 32]}>
-          {services.map((service, index) => (
-            <Col xs={24} md={8} key={index}>
-              <Card
-                hoverable
-                style={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  border: '1px solid #e8e3da'
-                }}
-              >
-                <div style={{ textAlign: 'center' }}>
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>{service.icon}</div>
-                  <Title level={4} style={{ color: '#2C2C2C', marginBottom: '16px' }}>
-                    {service.title}
-                  </Title>
-                  <Paragraph style={{ color: '#6B6B6B', marginBottom: '16px' }}>
-                    {service.description}
-                  </Paragraph>
-                  <ul style={{ textAlign: 'left', color: '#6B6B6B', paddingLeft: '20px' }}>
-                    {service.items.map((item, idx) => (
-                      <li key={idx} style={{ marginBottom: '8px' }}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
+          <Row gutter={[32, 32]}>
+            {services.map((service, index) => (
+              <Col xs={24} md={8} key={index}>
+                <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                  <Card
+                    hoverable
+                    style={{
+                      height: '100%',
+                      borderRadius: '12px',
+                      border: '1px solid #e8e3da'
+                    }}
+                  >
+                    <div style={{ textAlign: 'center' }}>
+                      <motion.div 
+                        style={{ fontSize: '48px', marginBottom: '16px' }}
+                        whileHover={{ scale: 1.2, rotate: 10 }}
+                        transition={{ type: "spring", stiffness: 300 }}
+                      >
+                        {service.icon}
+                      </motion.div>
+                      <Title level={4} style={{ color: '#2C2C2C', marginBottom: '16px' }}>
+                        {service.title}
+                      </Title>
+                      <Paragraph style={{ color: '#6B6B6B', marginBottom: '16px' }}>
+                        {service.description}
+                      </Paragraph>
+                      <ul style={{ textAlign: 'left', color: '#6B6B6B', paddingLeft: '20px' }}>
+                        {service.items.map((item, idx) => (
+                          <li key={idx} style={{ marginBottom: '8px' }}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
+        </motion.div>
       </div>
 
       {/* Process Detail */}
@@ -155,40 +210,52 @@ function WhatWeDo() {
           <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#2C2C2C', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
             Our Professional Process
           </Title>
-          <Row gutter={[32, 32]}>
-            {processSteps.map((step, index) => (
-              <Col xs={24} sm={12} lg={8} key={index}>
-                <Card style={{ height: '100%', borderRadius: '12px' }}>
-                  <div style={{ display: 'flex', gap: '16px' }}>
-                    <div style={{
-                      background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-                      width: '50px',
-                      height: '50px',
-                      borderRadius: '50%',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      fontSize: '20px',
-                      flexShrink: 0,
-                      boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
-                    }}>
-                      {step.number}
-                    </div>
-                    <div>
-                      <Title level={4} style={{ color: '#2C2C2C', marginTop: '8px', marginBottom: '12px' }}>
-                        {step.title}
-                      </Title>
-                      <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
-                        {step.description}
-                      </Paragraph>
-                    </div>
-                  </div>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <Row gutter={[32, 32]}>
+              {processSteps.map((step, index) => (
+                <Col xs={24} sm={12} lg={8} key={index}>
+                  <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                    <Card style={{ height: '100%', borderRadius: '12px' }}>
+                      <div style={{ display: 'flex', gap: '16px' }}>
+                        <motion.div 
+                          style={{
+                            background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+                            width: '50px',
+                            height: '50px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: 'white',
+                            fontWeight: 'bold',
+                            fontSize: '20px',
+                            flexShrink: 0,
+                            boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
+                          }}
+                          whileHover={{ scale: 1.1 }}
+                        >
+                          {step.number}
+                        </motion.div>
+                        <div>
+                          <Title level={4} style={{ color: '#2C2C2C', marginTop: '8px', marginBottom: '12px' }}>
+                            {step.title}
+                          </Title>
+                          <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
+                            {step.description}
+                          </Paragraph>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          </motion.div>
         </div>
       </div>
 
@@ -197,27 +264,36 @@ function WhatWeDo() {
         <Title level={2} style={{ textAlign: 'center', marginBottom: '40px', color: '#2C2C2C', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
           Premium Materials We Use
         </Title>
-        <Row gutter={[32, 32]}>
-          {materials.map((material, index) => (
-            <Col xs={24} sm={12} key={index}>
-              <Card
-                hoverable
-                style={{
-                  height: '100%',
-                  borderRadius: '12px',
-                  border: '1px solid #e8e3da'
-                }}
-              >
-                <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
-                  {material.title}
-                </Title>
-                <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
-                  {material.description}
-                </Paragraph>
-              </Card>
-            </Col>
-          ))}
-        </Row>
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          <Row gutter={[32, 32]}>
+            {materials.map((material, index) => (
+              <Col xs={24} sm={12} key={index}>
+                <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                  <Card
+                    hoverable
+                    style={{
+                      height: '100%',
+                      borderRadius: '12px',
+                      border: '1px solid #e8e3da'
+                    }}
+                  >
+                    <Title level={4} style={{ color: '#2C2C2C', marginBottom: '12px' }}>
+                      {material.title}
+                    </Title>
+                    <Paragraph style={{ color: '#6B6B6B', margin: 0 }}>
+                      {material.description}
+                    </Paragraph>
+                  </Card>
+                </motion.div>
+              </Col>
+            ))}
+          </Row>
+        </motion.div>
       </div>
 
       {/* Guarantee */}
@@ -227,28 +303,43 @@ function WhatWeDo() {
             <Title level={2} style={{ textAlign: 'center', color: '#2C2C2C', marginBottom: '40px', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
               Our Service Guarantee
             </Title>
-            <Row gutter={[24, 24]}>
-              {guaranteePoints.map((point, index) => (
-                <Col xs={24} sm={12} md={8} key={index}>
-                  <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <CheckCircleOutlined style={{ fontSize: '24px', color: '#10b981', marginTop: '4px' }} />
-                    <Paragraph style={{ color: '#2C2C2C', margin: 0, fontSize: '16px' }}>
-                      {point}
-                    </Paragraph>
-                  </div>
-                </Col>
-              ))}
-            </Row>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <Row gutter={[24, 24]}>
+                {guaranteePoints.map((point, index) => (
+                  <Col xs={24} sm={12} md={8} key={index}>
+                    <motion.div 
+                      variants={itemVariants}
+                      style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}
+                    >
+                      <CheckCircleOutlined style={{ fontSize: '24px', color: '#10b981', marginTop: '4px' }} />
+                      <Paragraph style={{ color: '#2C2C2C', margin: 0, fontSize: '16px' }}>
+                        {point}
+                      </Paragraph>
+                    </motion.div>
+                  </Col>
+                ))}
+              </Row>
+            </motion.div>
           </Card>
         </div>
       </div>
 
       {/* CTA Section */}
-      <div style={{
-        background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%)',
-        padding: '60px 20px',
-        textAlign: 'center'
-      }}>
+      <motion.div 
+        style={{
+          background: 'linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, rgba(247, 147, 30, 0.1) 100%)',
+          padding: '60px 20px',
+          textAlign: 'center'
+        }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+      >
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <Title level={2} style={{ color: '#2C2C2C', marginBottom: '16px', fontWeight: '800', fontSize: 'clamp(1.75rem, 4vw, 2.5rem)' }}>
             Ready to Refresh Your Bathroom?
@@ -257,24 +348,28 @@ function WhatWeDo() {
             Get your free, no-obligation quote today
           </Paragraph>
           <Link to="/contact">
-            <button style={{
-              height: '50px',
-              fontSize: '16px',
-              padding: '0 40px',
-              background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
-              border: 'none',
-              borderRadius: '6px',
-              color: 'white',
-              cursor: 'pointer',
-              fontWeight: '500',
-              boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
-            }}>
+            <motion.button 
+              style={{
+                height: '50px',
+                fontSize: '16px',
+                padding: '0 40px',
+                background: 'linear-gradient(135deg, #FF6B35 0%, #F7931E 100%)',
+                border: 'none',
+                borderRadius: '6px',
+                color: 'white',
+                cursor: 'pointer',
+                fontWeight: '500',
+                boxShadow: '0 8px 24px rgba(255, 107, 53, 0.3)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
               Get Your Free Quote
-            </button>
+            </motion.button>
           </Link>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 
